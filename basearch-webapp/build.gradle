@@ -1,0 +1,60 @@
+buildscript {
+   repositories {
+	   mavenCentral()
+	   jcenter()
+   }
+   dependencies {
+	   classpath "org.hsqldb:hsqldb:2.3.0"
+	   classpath "org.jboss.arquillian.gradle:arquillian-gradle-plugin:0.1"
+   }
+}
+
+apply plugin: 'war'
+apply plugin: 'arquillian'
+
+dependencies {
+    providedCompile("commons-logging:commons-logging:1.1.1")
+    providedCompile("org.apache.geronimo.specs:geronimo-servlet_3.0_spec:1.0")
+
+    compile("javax.inject:javax.inject:1")
+    compile("javax.validation:validation-api:1.0.0.GA")
+    compile("org.slf4j:slf4j-api:1.7.6")
+    compile("org.springframework:spring-webmvc:4.0.3.RELEASE")
+    compile("org.springframework:spring-tx:4.0.3.RELEASE")
+    compile("org.springframework:spring-orm:4.0.3.RELEASE")
+    compile("org.springframework.security:spring-security-web:3.2.3.RELEASE")
+    compile("org.springframework.security:spring-security-config:3.2.3.RELEASE")
+    compile("org.thymeleaf:thymeleaf-spring4:2.1.2.RELEASE")
+    compile("org.eclipse.persistence:org.eclipse.persistence.jpa:2.5.1")
+    
+    runtime("org.slf4j:jcl-over-slf4j:1.7.6")
+    runtime("ch.qos.logback:logback-classic:1.1.1")
+    runtime("org.apache.bval:bval-jsr303:0.5")
+    runtime("org.aspectj:aspectjweaver:1.7.4")
+
+	providedRuntime "org.hsqldb:hsqldb:2.3.0"
+}
+
+war {
+	from 'WebContent'
+    webInf { from 'WEB-INF' } // adds a file-set to the WEB-INF dir.
+}
+
+
+arquillian {
+    debug = true
+
+    containers {
+        jetty {
+            version = '8'
+            type = 'embedded'
+            config = ['bindHttpPort': 8080, 'bindAddress': '127.0.0.1', 'jettyPlus': true]
+
+            dependencies {
+                adapter 'org.jboss.arquillian.container:arquillian-jetty-embedded-7:1.0.0.CR2'
+                container 'org.eclipse.jetty:jetty-webapp:8.1.11.v20130520'
+                container group: 'org.eclipse.jetty', name: 'jetty-plus', version: '8.1.11.v20130520'
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+buildscript {
+   repositories {
+	   mavenCentral()
+   }
+   dependencies {
+	   classpath "org.eclipse.persistence:org.eclipse.persistence.jpa:2.5.1"
+   }
+}
+
+dependencies {
+    compile("org.eclipse.persistence:javax.persistence:2.1.0")
+    compile("javax.validation:validation-api:1.0.0.GA")
+    compile("org.eclipse.persistence:org.eclipse.persistence.core:2.5.1")
+}
+
+configurations {
+    woven
+}
+
+task eclipselinkWeaver {
+	dependsOn compileJava, processResources
+	ext.classesDir = compileJava.destinationDir
+	ext.persistenceXmlDir = processResources.destinationDir
+	ext.outputDir = new File(buildDir, 'woven-classes')
+	inputs.files fileTree(classesDir),fileTree(persistenceXmlDir)
+	outputs.dir outputDir
+}
+eclipselinkWeaver << {
+	def weaver = new org.eclipse.persistence.tools.weaving.jpa.StaticWeaveProcessor(classesDir, outputDir)
+	weaver.setPersistenceInfo(persistenceXmlDir)
+	weaver.setLogLevel(3)
+	weaver.performWeaving()
+}
+classes.dependsOn eclipselinkWeaver
+
+task wovenJar(type: Jar) {
+    baseName = archivesBaseName + '-woven'
+    dependsOn classes
+    from eclipselinkWeaver.outputDir,eclipselinkWeaver.persistenceXmlDir
+}
+
+artifacts {
+    woven wovenJar
+}

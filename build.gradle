@@ -1,0 +1,20 @@
+
+subprojects {
+    apply plugin: 'java'
+    repositories {
+        flatDir { dirs 'lib' }
+        mavenCentral()
+    }
+}
+
+project(':basearch-webapp') {
+    dependencies {
+        compile project(path: ':basearch-model', configuration: 'woven')
+    }
+}
+
+// Gradle wrapper task
+// Only used when in need to reinstall the wrapper
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
