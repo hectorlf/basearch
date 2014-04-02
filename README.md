@@ -7,4 +7,4 @@ Uses: Spring MVC, Spring Security, EclipseLink, Thymeleaf
 
 Built with Gradle
 
-Start with "gradle arquillianRun"
+Start with "gradlew arquillianRun"
