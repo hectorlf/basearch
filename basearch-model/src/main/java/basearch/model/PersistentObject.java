@@ -12,14 +12,14 @@ public abstract class PersistentObject {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE,generator="jpa_seq")
-	private Integer id;
+	private Long id;
 
 	// getters & setters
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -12,7 +12,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public User getByUsername(String username) {
-		// TODO Auto-generated method stub
+		if (username == null) throw new IllegalArgumentException("username can't be null");
 		return null;
 	}
 

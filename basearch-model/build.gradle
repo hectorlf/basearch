@@ -10,7 +10,6 @@ buildscript {
 dependencies {
     compile("org.eclipse.persistence:javax.persistence:2.1.0")
     compile("javax.validation:validation-api:1.0.0.GA")
-    compile("org.eclipse.persistence:org.eclipse.persistence.core:2.5.1")
 }
 
 configurations {
