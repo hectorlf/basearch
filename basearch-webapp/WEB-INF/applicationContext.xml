@@ -25,7 +25,7 @@
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 
-	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
@@ -34,7 +34,7 @@
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
 
-    <tx:advice id="txAdvice" transaction-manager="txManager">
+    <tx:advice id="txAdvice">
         <tx:attributes>
             <tx:method name=""/>
         </tx:attributes>
