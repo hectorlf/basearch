@@ -1,7 +1,11 @@
 package basearch.dao.impl;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -13,6 +17,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import basearch.model.PersistentObject;
@@ -31,26 +36,49 @@ public abstract class BaseDao {
 	 * fluent accessors
 	 */
 	
-	protected final <E extends PersistentObject> EntityAccesssor<E> entity(Class<E> type) {
+	protected final <E extends PersistentObject> EntityAccessor<E> entity(Class<E> type) {
 		return new EntityAccessorImpl<E>(type);
 	}
-	protected interface EntityAccesssor<E extends PersistentObject> {
+	protected interface EntityAccessor<E extends PersistentObject> {
 		public E by(Long id);
-		public E by(String propertyName, Object propertyValue);
+		public PropertyBoundEntityAccessor<E> with(String propertyName, Object propertyValue);
 	}
-	private class EntityAccessorImpl<E extends PersistentObject> implements EntityAccesssor<E> {
+	protected interface PropertyBoundEntityAccessor<E extends PersistentObject> {
+		public PropertyBoundEntityAccessor<E> and(String propertyName, Object propertyValue);
+		public E find();
+	}
+	private class EntityAccessorImpl<E extends PersistentObject> implements EntityAccessor<E>,PropertyBoundEntityAccessor<E> {
 		private final Class<E> type;
+		private Map<String,Object> parameters;
 		public EntityAccessorImpl(Class<E> type) { this.type = type; }
 		@Override public E by(Long id) {
 			assert(id != null);
 			return em.find(type, id);
 		}
-		@Override public E by(String propertyName, Object propertyValue) throws NonUniqueResultException {
-			assert(propertyName != null && propertyValue != null && !propertyName.isEmpty() && propertyValue != null);
+		@Override public PropertyBoundEntityAccessor<E> with(String propertyName, Object propertyValue) {
+			assert(propertyName != null && !propertyName.isEmpty() && propertyValue != null);
+			parameters = new HashMap<String,Object>();
+			parameters.put(propertyName, propertyValue);
+			return this;
+		}
+		@Override public PropertyBoundEntityAccessor<E> and(String propertyName, Object propertyValue) {
+			assert(propertyName != null && !propertyName.isEmpty() && propertyValue != null);
+			parameters.put(propertyName, propertyValue);
+			return this;
+		}
+		@Override public E find() throws NonUniqueResultException {
 			CriteriaBuilder builder = em.getCriteriaBuilder();
 			CriteriaQuery<E> q = builder.createQuery(type);
 			Root<E> r = q.from(type);
-			q.where(builder.equal(r.get(propertyName), propertyValue));
+			Set<Entry<String,Object>> entries = parameters.entrySet();
+			Iterator<Entry<String,Object>> eit = entries.iterator();
+			Entry<String,Object> entry = eit.next();
+			Predicate conditions = builder.equal(r.get(entry.getKey()), entry.getValue());
+			while (eit.hasNext()) {
+				entry = eit.next();
+				conditions = builder.and(conditions,builder.equal(r.get(entry.getKey()), entry.getValue()));
+			}
+			q.where(conditions);
 			try { return em.createQuery(q).getSingleResult(); } catch(NoResultException nre) { return null; }
 		}
 	}

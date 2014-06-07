@@ -3,6 +3,8 @@ package basearch.dao.impl;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.springframework.stereotype.Repository;
 
 import basearch.dao.MetadataDao;
@@ -22,6 +24,17 @@ public class MetadataDaoImpl extends BaseDao implements MetadataDao {
 	public Language getDefaultLanguage() {
 		Language l = first(Language.class);
 		return l;
+	}
+	
+	@Override
+	public Language getLanguageBy(String langCode, String region, String variant) throws NonUniqueResultException {
+		if (langCode == null || langCode.isEmpty()) throw new IllegalArgumentException("Language code can't be null or empty.");
+		if (variant != null && region == null) throw new IllegalArgumentException("Region can't be null if variant is not null.");
+		
+		PropertyBoundEntityAccessor<Language> accessor = entity(Language.class).with("langCode", langCode);
+		if (region != null) accessor.and("regionCode", region);
+		if (variant != null) accessor.and("variantCode", variant);
+		return accessor.find();
 	}
 
 }

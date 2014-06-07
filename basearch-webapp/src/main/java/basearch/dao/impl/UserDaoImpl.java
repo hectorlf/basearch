@@ -13,7 +13,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	@Override
 	public User getByUsername(String username) {
 		if (username == null || username.isEmpty()) throw new IllegalArgumentException("username can't be null");
-		return entity(User.class).by("username", username);
+		return entity(User.class).with("username", username).find();
 	}
 
 	@Override
