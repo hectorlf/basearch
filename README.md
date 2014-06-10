@@ -7,4 +7,4 @@ Uses: Spring MVC, Spring Security, EclipseLink, Thymeleaf
 
 Built with Gradle
 
-Start with "gradlew arquillianRun"
+Run the test cases with "gradlew test" or start with "gradlew arquillianRun" (requires a preconfigured local HSQLDB)
