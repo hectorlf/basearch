@@ -4,9 +4,10 @@
 		<Arg></Arg>
 		<Arg>java:comp/env/jdbc/testds</Arg>
 		<Arg>
-			<New class="org.hsqldb.jdbc.JDBCDataSource">
-				<Set name="database">jdbc:hsqldb:mem:mymemdb</Set>
-				<Set name="user">SA</Set>
+			<New class="org.apache.commons.dbcp2.BasicDataSourceFactory">
+				<Set name="driverClassName">org.hsqldb.jdbc.JDBCDriver</Set>
+				<Set name="url">jdbc:hsqldb:build/db/test</Set>
+				<Set name="username">SA</Set>
 				<Set name="password">SA</Set>
 			</New>
 		</Arg>

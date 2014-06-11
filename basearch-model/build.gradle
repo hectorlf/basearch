@@ -3,20 +3,18 @@ buildscript {
 	   mavenCentral()
    }
    dependencies {
+	   classpath "org.eclipse.persistence:javax.persistence:2.1.0"
 	   classpath "org.eclipse.persistence:org.eclipse.persistence.jpa:2.5.1"
-	   classpath "org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.5.1"
    }
 }
 
+
 dependencies {
-    compile("org.eclipse.persistence:javax.persistence:2.1.0")
-    compile("org.eclipse.persistence:org.eclipse.persistence.core:2.5.1")
-    compile("javax.validation:validation-api:1.0.0.GA")
+	// some common dependencies are configured in the root build.gradle
 }
 
-compileJava {
-	options.compilerArgs << '-Aeclipselink.canonicalmodel.subpackage=metamodel'
-}
+
+// jpa static weaving
 
 configurations {
     woven
@@ -46,4 +44,26 @@ task wovenJar(type: Jar) {
 
 artifacts {
     woven wovenJar
+}
+
+
+// metamodel generation
+
+configurations {
+    metamodel
+}
+
+dependencies {
+    metamodel("org.eclipse.persistence:javax.persistence:")
+	metamodel("org.eclipse.persistence:org.eclipse.persistence.jpa:")
+    metamodel("org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:")
+}
+
+task generateMetamodel(type: JavaCompile) {
+	classpath = configurations.metamodel.incoming.files
+	source compileJava.source
+	destinationDir = file(projectDir.absolutePath + '/src/main/java')
+	options.compilerArgs << '-proc:only'
+	options.compilerArgs << '-Aeclipselink.persistencexml=' + projectDir.absolutePath + '/src/main/resources/META-INF/persistence.xml'
+	options.compilerArgs << '-Aeclipselink.canonicalmodel.subpackage=meta'
 }
