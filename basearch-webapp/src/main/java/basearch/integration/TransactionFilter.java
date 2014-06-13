@@ -48,7 +48,7 @@ public class TransactionFilter implements Filter {
 	private void doFirstTimeFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		request.setAttribute(TRANSACTION_FILTER_MARKER_ATTRIBUTE, TRANSACTION_FILTER_MARKER_ATTRIBUTE);
 		ApplicationContext ctx = ContextLoaderListener.getCurrentWebApplicationContext();
-		PlatformTransactionManager txManager = (PlatformTransactionManager)ctx.getBean("txManager");
+		PlatformTransactionManager txManager = (PlatformTransactionManager)ctx.getBean("transactionManager");
 		TransactionAttribute def = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus tx = null;
 		try {

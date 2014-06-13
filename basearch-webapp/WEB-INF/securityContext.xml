@@ -11,6 +11,8 @@
 	<debug/>
 	
 	<http>
+		<intercept-url pattern="/login.page" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/index.page" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<intercept-url pattern="/*" access="ROLE_ADMIN"/>
 		<form-login login-page="/login.page" login-processing-url="/login.action" username-parameter="username" password-parameter="password" authentication-failure-url="/login.page?login_error"/>
 		<logout logout-url="/logout.action" logout-success-url="/index.page"/>
