@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -17,10 +16,13 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 
 import basearch.model.PersistentObject;
+import basearch.model.PersistentObject_;
 
 
 public abstract class BaseDao {
@@ -41,42 +43,44 @@ public abstract class BaseDao {
 	}
 	protected interface EntityAccessor<E extends PersistentObject> {
 		public E by(Long id);
-		public PropertyBoundEntityAccessor<E> with(String propertyName, Object propertyValue);
+		public <T> PropertyBoundEntityAccessor<E> with(SingularAttribute<E, T> propertyName, T propertyValue);
 	}
 	protected interface PropertyBoundEntityAccessor<E extends PersistentObject> {
-		public PropertyBoundEntityAccessor<E> and(String propertyName, Object propertyValue);
+		public <T> PropertyBoundEntityAccessor<E> and(SingularAttribute<E, T> propertyName, T propertyValue);
 		public E find();
 	}
 	private class EntityAccessorImpl<E extends PersistentObject> implements EntityAccessor<E>,PropertyBoundEntityAccessor<E> {
 		private final Class<E> type;
-		private Map<String,Object> parameters;
+		private CriteriaBuilder builder;
+		private CriteriaQuery<E> q;
+		private Root<E> r;
+		private Map<Path<?>,Object> parameters;
 		public EntityAccessorImpl(Class<E> type) { this.type = type; }
 		@Override public E by(Long id) {
 			assert(id != null);
 			return em.find(type, id);
 		}
-		@Override public PropertyBoundEntityAccessor<E> with(String propertyName, Object propertyValue) {
-			assert(propertyName != null && !propertyName.isEmpty() && propertyValue != null);
-			parameters = new HashMap<String,Object>();
-			parameters.put(propertyName, propertyValue);
+		@Override public <T> PropertyBoundEntityAccessor<E> with(SingularAttribute<E, T> propertyName, T propertyValue) {
+			assert(propertyName != null && propertyValue != null);
+			builder = em.getCriteriaBuilder();
+			q = builder.createQuery(type);
+			r = q.from(type);
+			parameters = new HashMap<Path<?>,Object>();
+			parameters.put(r.get(propertyName), propertyValue);
 			return this;
 		}
-		@Override public PropertyBoundEntityAccessor<E> and(String propertyName, Object propertyValue) {
-			assert(propertyName != null && !propertyName.isEmpty() && propertyValue != null);
-			parameters.put(propertyName, propertyValue);
+		@Override public <T> PropertyBoundEntityAccessor<E> and(SingularAttribute<E, T> propertyName, T propertyValue) {
+			assert(propertyName != null && propertyValue != null);
+			parameters.put(r.get(propertyName), propertyValue);
 			return this;
 		}
 		@Override public E find() throws NonUniqueResultException {
-			CriteriaBuilder builder = em.getCriteriaBuilder();
-			CriteriaQuery<E> q = builder.createQuery(type);
-			Root<E> r = q.from(type);
-			Set<Entry<String,Object>> entries = parameters.entrySet();
-			Iterator<Entry<String,Object>> eit = entries.iterator();
-			Entry<String,Object> entry = eit.next();
-			Predicate conditions = builder.equal(r.get(entry.getKey()), entry.getValue());
+			Iterator<Entry<Path<?>,Object>> eit = parameters.entrySet().iterator();
+			Entry<Path<?>,Object> entry = eit.next();
+			Predicate conditions = builder.equal(entry.getKey(), entry.getValue());
 			while (eit.hasNext()) {
 				entry = eit.next();
-				conditions = builder.and(conditions,builder.equal(r.get(entry.getKey()), entry.getValue()));
+				conditions = builder.and(conditions,builder.equal(entry.getKey(), entry.getValue()));
 			}
 			q.where(conditions);
 			try { return em.createQuery(q).getSingleResult(); } catch(NoResultException nre) { return null; }
@@ -141,7 +145,8 @@ public abstract class BaseDao {
 	protected final <T extends PersistentObject> T first(Class<T> type) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(type);
-		criteria.orderBy(builder.asc(criteria.from(type).get("id")));
+		Root<T> r = criteria.from(type);
+		criteria.orderBy(builder.asc(r.get(PersistentObject_.id)));
 		TypedQuery<T> q = em.createQuery(criteria);
 		q.setMaxResults(1);
 		return q.getSingleResult();

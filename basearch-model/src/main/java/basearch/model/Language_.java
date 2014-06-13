@@ -1,11 +1,10 @@
-package basearch.model.meta;
+package basearch.model;
 
-import basearch.model.Language;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.1.v20130918-rNA", date="2014-06-11T20:45:47")
+@Generated(value="EclipseLink-2.5.1.v20130918-rNA", date="2014-06-13T22:32:40")
 @StaticMetamodel(Language.class)
 public class Language_ extends PersistentObject_ {
 

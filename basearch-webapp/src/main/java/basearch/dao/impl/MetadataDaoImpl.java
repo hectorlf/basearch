@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import basearch.dao.MetadataDao;
 import basearch.model.Language;
+import basearch.model.Language_;
 
 @Repository
 public class MetadataDaoImpl extends BaseDao implements MetadataDao {
@@ -31,9 +32,9 @@ public class MetadataDaoImpl extends BaseDao implements MetadataDao {
 		if (langCode == null || langCode.isEmpty()) throw new IllegalArgumentException("Language code can't be null or empty.");
 		if (variant != null && region == null) throw new IllegalArgumentException("Region can't be null if variant is not null.");
 		
-		PropertyBoundEntityAccessor<Language> accessor = entity(Language.class).with("langCode", langCode);
-		if (region != null) accessor.and("regionCode", region);
-		if (variant != null) accessor.and("variantCode", variant);
+		PropertyBoundEntityAccessor<Language> accessor = entity(Language.class).with(Language_.langCode, langCode);
+		if (region != null) accessor.and(Language_.regionCode, region);
+		if (variant != null) accessor.and(Language_.variantCode, variant);
 		return accessor.find();
 	}
 

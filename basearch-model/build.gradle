@@ -59,11 +59,10 @@ dependencies {
     metamodel("org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:")
 }
 
-def metamodelSubpackage = 'meta'
 def metamodelDestDir = projectDir.absolutePath + '/src/main/java'
 
 task deleteMetamodel(type: Delete) {
-	delete files(fileTree(metamodelDestDir) { include '**/' + metamodelSubpackage + '/*_.java' }) 
+	delete files(fileTree(metamodelDestDir) { include '**/*_.java' }) 
 }
 
 task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
@@ -72,5 +71,4 @@ task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
 	destinationDir = file(metamodelDestDir)
 	options.compilerArgs << '-proc:only'
 	options.compilerArgs << '-Aeclipselink.persistencexml=' + projectDir.absolutePath + '/src/main/resources/META-INF/persistence.xml'
-	options.compilerArgs << '-Aeclipselink.canonicalmodel.subpackage=' + metamodelSubpackage
 }
