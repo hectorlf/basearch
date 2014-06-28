@@ -23,7 +23,7 @@ public class MetadataDaoImpl extends BaseDao implements MetadataDao {
 
 	@Override
 	public Language getDefaultLanguage() {
-		Language l = first(Language.class);
+		Language l = entity(Language.class).by(Language.DEFAULT_LANGUAGE_ID);
 		return l;
 	}
 	

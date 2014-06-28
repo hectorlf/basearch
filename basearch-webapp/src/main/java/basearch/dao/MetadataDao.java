@@ -18,7 +18,8 @@ public interface MetadataDao {
 	List<Language> findAllLanguages();
 
 	/**
-	 * The default language is by definition the first record in the table
+	 * The default language is by definition the first record in the table, and
+	 * is expected to have an ID equal to Language.DEFAULT_LANGUAGE_ID
 	 */
 	Language getDefaultLanguage();
 	

@@ -19,6 +19,8 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @Cache(size=5)
 public class Language extends PersistentObject {
 
+	public static final Long DEFAULT_LANGUAGE_ID = Long.valueOf(1);
+
 	@Basic(optional=false)
 	@Column(name="language",length=3)
 	private String langCode;
