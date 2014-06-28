@@ -15,7 +15,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import basearch.dao.MetadataDao;
+import basearch.dao.UserDao;
 import basearch.dao.impl.MetadataDaoImpl;
+import basearch.dao.impl.UserDaoImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -51,6 +53,11 @@ public abstract class BaseSpringDbTest {
 		@Bean
 		public MetadataDao metadataDao() {
 			return new MetadataDaoImpl();
+		}
+
+		@Bean
+		public UserDao userDao() {
+			return new UserDaoImpl();
 		}
 
 	}

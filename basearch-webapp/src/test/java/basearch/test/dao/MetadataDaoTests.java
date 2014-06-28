@@ -1,5 +1,7 @@
 package basearch.test.dao;
 
+import java.util.Locale;
+
 import javax.persistence.NonUniqueResultException;
 
 import org.junit.Test;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import basearch.dao.MetadataDao;
+import basearch.model.Language;
 import basearch.test.BaseSpringDbTest;
 
 public class MetadataDaoTests extends BaseSpringDbTest {
@@ -34,6 +37,22 @@ public class MetadataDaoTests extends BaseSpringDbTest {
 	@Test(expected=NonUniqueResultException.class)
 	public void testGetLanguageByException() {
 		metadataDao.getLanguageBy("en", null, null);
+	}
+
+	@Test
+	public void testLanguageToLocale() {
+		Language l = metadataDao.getLanguageBy("es", "ES", null);
+		Assert.notNull(l);
+		Assert.isTrue(l.toLocale().equals(new Locale("es", "ES")));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testIllegalArgumentException1() {
+		metadataDao.getLanguageBy(null, null, null);
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testIllegalArgumentException2() {
+		metadataDao.getLanguageBy("blablabla", null, "shouldbreak");
 	}
 
 }

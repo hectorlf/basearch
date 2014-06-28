@@ -36,9 +36,9 @@ public class Language extends PersistentObject {
 	// getters sinteticos
 	
 	public Locale toLocale() {
-		if (langCode == null || langCode.length() == 0) return null;
-		if (regionCode == null || regionCode.length() == 0) return new Locale(langCode);
-		if (variantCode == null || variantCode.length() == 0) return new Locale(langCode, regionCode);
+		if (langCode == null || langCode.isEmpty()) return null;
+		if (regionCode == null || regionCode.isEmpty()) return new Locale(langCode);
+		if (variantCode == null || variantCode.isEmpty()) return new Locale(langCode, regionCode);
 		return new Locale(langCode, regionCode, variantCode);
 	}
 	
