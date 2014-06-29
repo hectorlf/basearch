@@ -4,7 +4,8 @@ create table languages
   id integer not null primary key,
   language character varying(3) not null,
   region character varying(3),
-  variant character varying(8)
+  variant character varying(8),
+  constraint u_locale unique (language,region,variant)
 );
 
 -- Table: users

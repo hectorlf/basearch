@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheIndex;
 import org.eclipse.persistence.annotations.ReadOnly;
 
 @Entity
@@ -17,6 +18,7 @@ import org.eclipse.persistence.annotations.ReadOnly;
 @Access(AccessType.FIELD)
 @ReadOnly
 @Cache(size=5)
+@CacheIndex(columnNames={"language","region","variant"}, updateable=false)
 public class Language extends PersistentObject {
 
 	public static final Long DEFAULT_LANGUAGE_ID = Long.valueOf(1);

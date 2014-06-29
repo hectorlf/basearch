@@ -5,7 +5,8 @@ CREATE TABLE languages
   language character varying(3) NOT NULL,
   region character varying(3),
   variant character varying(8),
-  CONSTRAINT languages_pk PRIMARY KEY (id)
+  CONSTRAINT languages_pk PRIMARY KEY (id),
+  CONSTRAINT locale_unique UNIQUE (language, region, variant)
 )
 WITH (
   OIDS=FALSE
