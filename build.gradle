@@ -63,5 +63,5 @@ project(':basearch-webapp') {
 // Gradle wrapper task
 // Only used when in need to reinstall the wrapper
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0-rc-2'
+    gradleVersion = '2.0'
 }
