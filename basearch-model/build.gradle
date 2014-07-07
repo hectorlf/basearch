@@ -87,5 +87,5 @@ task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
    source compileJava.source
    destinationDir = file(metamodelDestDir)
    options.compilerArgs << '-proc:only'
-   options.compilerArgs << '-Aeclipselink.persistencexml=' + projectDir.absolutePath + '/src/main/resources/META-INF/persistence.xml'
+   options.compilerArgs << '-Aeclipselink.persistencexml=' + projectDir.absolutePath + '/env/dev/resources/META-INF/persistence.xml'
 }
