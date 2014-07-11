@@ -33,9 +33,10 @@ WITH (
 -- Table: authorities
 CREATE TABLE authorities
 (
+  id integer NOT NULL,
   username character varying(50) NOT NULL,
   authority character varying(50) NOT NULL,
-  CONSTRAINT authorities_pk PRIMARY KEY (username),
+  CONSTRAINT authorities_pk PRIMARY KEY (id),
   CONSTRAINT authorities_users_fk FOREIGN KEY (username)
       REFERENCES users (username) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
@@ -44,3 +45,4 @@ CREATE TABLE authorities
 WITH (
   OIDS=FALSE
 );
+

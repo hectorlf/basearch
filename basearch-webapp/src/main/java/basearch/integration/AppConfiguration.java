@@ -2,22 +2,22 @@ package basearch.integration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
+import basearch.dao.AuthDao;
+import basearch.dao.MetadataDao;
 import basearch.dao.UserDao;
+import basearch.dao.impl.AuthDaoImpl;
+import basearch.dao.impl.MetadataDaoImpl;
 import basearch.dao.impl.UserDaoImpl;
+import basearch.service.AuthService;
 import basearch.service.UserService;
+import basearch.service.impl.AuthServiceImpl;
 import basearch.service.impl.UserServiceImpl;
 
 @Configuration
-@EnableWebMvc
 @EnableTransactionManagement
-@Import(value={ThymeleafConfiguration.class})
 public class AppConfiguration {
 
 	private static String[] messageSourceBasenames = { "applicationResources" };
@@ -28,26 +28,20 @@ public class AppConfiguration {
 		ms.setBasenames(messageSourceBasenames);
 		return ms;
 	}
-	
-	@Bean
-	public SessionBasedLocaleResolver sessionBasedLocaleResolver() {
-		return new SessionBasedLocaleResolver(userDao());
-	}
-	
-	@Bean
-	public CookieBasedLocaleResolver cookieBasedLocaleResolver() {
-		return new CookieBasedLocaleResolver();
-	}
 
-	@Bean
-	public LocaleResolver localeResolver() {
-		LocaleResolver lr = new ChainedLocaleResolver(sessionBasedLocaleResolver(), cookieBasedLocaleResolver(), new AcceptHeaderLocaleResolver());
-		return lr;
-	}
 
-	
 	// dao layer
-	
+
+	@Bean
+	public MetadataDao metadataDao() {
+		return new MetadataDaoImpl();
+	}
+
+	@Bean
+	public AuthDao authDao() {
+		return new AuthDaoImpl();
+	}
+
 	@Bean
 	public UserDao userDao() {
 		return new UserDaoImpl();
@@ -55,6 +49,11 @@ public class AppConfiguration {
 
 	// service layer
 	
+	@Bean
+	public AuthService authService() {
+		return new AuthServiceImpl(authDao());
+	}
+
 	@Bean
 	public UserService userService() {
 		return new UserServiceImpl(userDao());

@@ -23,6 +23,7 @@ create table users
 -- Table: authorities
 create table authorities
 (
+  id integer not null primary key,
   username character varying(50) not null,
   authority character varying(50) not null,
   constraint fk_authorities_users foreign key(username) references users(username),

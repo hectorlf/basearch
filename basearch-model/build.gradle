@@ -4,7 +4,8 @@ buildscript {
    }
    dependencies {
       classpath "org.eclipse.persistence:javax.persistence:2.1.0"
-      classpath "org.eclipse.persistence:org.eclipse.persistence.jpa:2.5.1"
+      classpath "org.eclipse.persistence:org.eclipse.persistence.jpa:2.5.2"
+      classpath "org.springframework.security:spring-security-core:3.2.4.RELEASE"
    }
 }
 
@@ -74,6 +75,7 @@ dependencies {
    metamodel("org.eclipse.persistence:javax.persistence:")
    metamodel("org.eclipse.persistence:org.eclipse.persistence.jpa:")
    metamodel("org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:")
+   metamodel("org.springframework.security:spring-security-core:")
 }
 
 def metamodelDestDir = projectDir.absolutePath + '/src/main/java'

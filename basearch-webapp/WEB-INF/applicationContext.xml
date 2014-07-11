@@ -40,8 +40,8 @@
         </tx:attributes>
     </tx:advice>
 
-    <context:component-scan base-package="basearch.integration, basearch.controller, basearch.dao, basearch.service"/>
+    <context:component-scan base-package="basearch.integration, basearch.dao, basearch.service"/>
 
-	<import resource="securityContext.xml"/>
+    <import resource="securityContext.xml"/>
 
 </beans>

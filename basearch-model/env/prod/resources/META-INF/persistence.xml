@@ -12,6 +12,8 @@
         <class>basearch.model.PersistentObject</class>
         <class>basearch.model.Language</class>
         <class>basearch.model.User</class>
+        <class>basearch.model.auth.Authority</class>
+        <class>basearch.model.auth.Principal</class>
         
         <properties>
 	        <property name="eclipselink.weaving" value="static"/>
