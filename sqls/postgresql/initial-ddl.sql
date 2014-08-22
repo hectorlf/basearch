@@ -1,3 +1,6 @@
+-- Sequences
+create sequence jpa_seq start with 100;
+
 -- Table: languages
 CREATE TABLE languages
 (

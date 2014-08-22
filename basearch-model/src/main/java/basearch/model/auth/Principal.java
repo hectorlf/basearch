@@ -1,9 +1,11 @@
 package basearch.model.auth;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.eclipse.persistence.annotations.CacheIndex;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import basearch.model.Language;
@@ -43,7 +44,7 @@ public class Principal extends PersistentObject implements UserDetails {
 	@JoinColumn(name="language_id",nullable=false)
 	private Language language;
 
-	@OneToMany(fetch=FetchType.EAGER,mappedBy="principal")
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="principal",cascade=CascadeType.REMOVE,orphanRemoval=true)
 	private Set<Authority> authorities;
 	
 	// getters & setters
@@ -80,7 +81,7 @@ public class Principal extends PersistentObject implements UserDetails {
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Collection<Authority> getAuthorities() {
 		return authorities;
 	}
 	public void setAuthorities(Set<Authority> authorities) {
@@ -103,6 +104,15 @@ public class Principal extends PersistentObject implements UserDetails {
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return enabled;
+	}
+
+	// utility methods
+
+	@Transient
+	public void addAuthority(Authority authority) {
+		if (authority == null) throw new IllegalArgumentException("Parameter authority can't be null");
+		if (authorities == null) authorities = new HashSet<Authority>();
+		authorities.add(authority);
 	}
 
 }

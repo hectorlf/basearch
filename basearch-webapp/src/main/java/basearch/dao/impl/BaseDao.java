@@ -127,6 +127,22 @@ public abstract class BaseDao {
 		em.persist(entity);
 	}
 
+	/**
+	 * Checks if an entity is persistent in this persistence context
+	 */
+	protected final boolean isPersistent(PersistentObject entity) {
+		assert(entity != null);
+		return em.contains(entity);
+	}
+
+	/**
+	 * Deletes the object
+	 */
+	protected final <T extends PersistentObject> void remove(T entity) {
+		assert(entity != null);
+		em.remove(entity);
+	}
+
 	/*
 	 * utility methods
 	 */

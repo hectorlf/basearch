@@ -2,8 +2,6 @@ package basearch.model;
 
 import java.util.Locale;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +13,6 @@ import org.eclipse.persistence.annotations.ReadOnly;
 
 @Entity
 @Table(name="languages")
-@Access(AccessType.FIELD)
 @ReadOnly
 @Cache(size=5)
 @CacheIndex(columnNames={"language","region","variant"}, updateable=false)
@@ -56,6 +53,13 @@ public class Language extends PersistentObject {
 
 	public String getVariantCode() {
 		return variantCode;
+	}
+
+	// overrides for immutability
+	
+	@Override
+	public void setId(Long id) {
+		throw new UnsupportedOperationException("Language entities are immutable");
 	}
 
 }
