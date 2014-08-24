@@ -16,7 +16,7 @@ create table users
 (
   id integer not null primary key,
   username character varying(50) not null,
-  password character varying(50) not null,
+  password character varying(60) not null,
   enabled boolean not null,
   language_id integer not null,
   constraint fk_users_languages foreign key(language_id) references languages(id),

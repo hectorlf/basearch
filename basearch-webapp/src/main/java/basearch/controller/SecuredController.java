@@ -7,14 +7,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class IndexController {
+public class SecuredController {
 
-	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SecuredController.class);
 
-	@RequestMapping(value="/index.page")
+	@RequestMapping(value="/secured.page")
 	public String welcome(ModelMap model) {
-		logger.debug("Going into IndexController.welcome()");
-		return "/index.html";
+		logger.debug("Going into SecuredController.welcome()");
+		return "/secured.html";
 	}
 
 }

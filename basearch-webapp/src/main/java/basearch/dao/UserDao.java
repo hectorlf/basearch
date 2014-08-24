@@ -7,10 +7,10 @@ import basearch.model.User;
 
 public interface UserDao {
 
-	public List<User> findAllUsers();
+	List<User> findAllUsers();
 
-	public User getByUsername(String username);
+	User getByUsername(String username);
 	
-	public void setLocaleFromLocaleResolver(String username, Locale locale);
+	void setLocaleFromLocaleResolver(String username, Locale locale);
 
 }

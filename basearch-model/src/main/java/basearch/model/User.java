@@ -1,7 +1,5 @@
 package basearch.model;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +13,8 @@ import org.eclipse.persistence.annotations.ReadOnly;
 
 @Entity
 @Table(name="users")
-@Access(AccessType.FIELD)
 @ReadOnly
+@CacheIndex(columnNames={"username"}, updateable=false)
 public class User extends PersistentObject {
 
 	@Basic(optional=false)
@@ -36,6 +34,13 @@ public class User extends PersistentObject {
 
 	public Language getLanguage() {
 		return language;
+	}
+
+	// overrides for immutability
+	
+	@Override
+	public void setId(Long id) {
+		throw new UnsupportedOperationException("User entities are immutable");
 	}
 
 }

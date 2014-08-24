@@ -11,19 +11,21 @@ import basearch.model.auth.Principal;
 
 public interface AuthDao {
 
+	Principal getByUsername(String username);
+	
 	/**
 	 * Implementation of Spring Security's UserDetailsService
 	 */
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 	
-	public Authority getAuthority(String username, String authority);
+	Authority getAuthority(String username, String authority);
 
-	public Principal createPrincipal(String username, String password, boolean enabled, Language language, Collection<String> authorities);
+	Principal createPrincipal(String username, String password, boolean enabled, Language language, Collection<String> authorities);
 
-	public void deletePrincipal(Principal principal);
+	void deletePrincipal(Principal principal);
 
-	public Authority assignAuthority(Principal principal, String authority);
+	Authority assignAuthority(Principal principal, String authority);
 
-	public void unassignAuthority(Principal principal, String authority);
+	void unassignAuthority(Principal principal, String authority);
 
 }

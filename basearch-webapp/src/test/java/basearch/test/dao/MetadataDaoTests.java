@@ -10,9 +10,9 @@ import org.springframework.util.Assert;
 
 import basearch.dao.MetadataDao;
 import basearch.model.Language;
-import basearch.test.BaseSpringDbTest;
+import basearch.test.BaseDaoTest;
 
-public class MetadataDaoTests extends BaseSpringDbTest {
+public class MetadataDaoTests extends BaseDaoTest {
 
 	@Autowired
 	private MetadataDao metadataDao;

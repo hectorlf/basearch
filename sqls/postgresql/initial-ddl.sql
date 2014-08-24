@@ -20,7 +20,7 @@ CREATE TABLE users
 (
   id integer NOT NULL,
   username character varying(50) NOT NULL,
-  password character varying(50) NOT NULL,
+  password character varying(60) NOT NULL,
   enabled boolean NOT NULL,
   language_id integer NOT NULL,
   CONSTRAINT users_pk PRIMARY KEY (id),

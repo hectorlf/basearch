@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import basearch.dao.UserDao;
-import basearch.test.BaseSpringDbTest;
+import basearch.test.BaseDaoTest;
 
-public class UserDaoTests extends BaseSpringDbTest {
+public class UserDaoTests extends BaseDaoTest {
 
 	@Autowired
 	private UserDao userDao;

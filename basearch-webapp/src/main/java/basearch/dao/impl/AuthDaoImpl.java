@@ -19,8 +19,16 @@ import basearch.model.auth.Principal_;
 public class AuthDaoImpl extends BaseDao implements AuthDao {
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public Principal getByUsername(String username) {
 		return entity(Principal.class).with(Principal_.username, username).find();
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		if (username == null || username.isEmpty()) throw new UsernameNotFoundException("Username is null or empty");
+		Principal p = getByUsername(username);
+		if (p == null) throw new UsernameNotFoundException("Username not found in db");
+		return p;
 	}
 	
 	@Override

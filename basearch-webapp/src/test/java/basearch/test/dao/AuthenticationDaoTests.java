@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
 
 import basearch.dao.AuthDao;
@@ -13,12 +14,9 @@ import basearch.dao.MetadataDao;
 import basearch.model.Language;
 import basearch.model.auth.Authority;
 import basearch.model.auth.Principal;
-import basearch.test.BaseSpringDbTest;
+import basearch.test.BaseDaoTest;
 
-public class AuthenticationDaoTests extends BaseSpringDbTest {
-
-//	@Autowired
-//	private MockMvc mockMvc;
+public class AuthenticationDaoTests extends BaseDaoTest {
 
 	@Autowired
 	private MetadataDao metadataDao;
@@ -34,8 +32,8 @@ public class AuthenticationDaoTests extends BaseSpringDbTest {
 		authorities.add("basicuser");
 		Principal p = authDao.createPrincipal("newlycreateduser", "none", true, l, authorities);
 		Assert.notNull(p);
-		Assert.notNull(authDao.loadUserByUsername("newlycreateduser"));
-		Assert.notEmpty(authDao.loadUserByUsername("newlycreateduser").getAuthorities());
+		Assert.notNull(authDao.getByUsername("newlycreateduser"));
+		Assert.notEmpty(authDao.getByUsername("newlycreateduser").getAuthorities());
 	}
 
 	@Test
@@ -47,16 +45,16 @@ public class AuthenticationDaoTests extends BaseSpringDbTest {
 		Principal p = authDao.createPrincipal("newlycreateduser", "none", true, l, authorities);
 		Assert.notNull(p);
 		authDao.deletePrincipal(p);
-		Assert.isNull(authDao.loadUserByUsername("newlycreateduser"));
+		Assert.isNull(authDao.getByUsername("newlycreateduser"));
 	}
 
 	@Test
 	public void testAuthorityCreation() {
-		Principal p = (Principal)authDao.loadUserByUsername("test");
+		Principal p = (Principal)authDao.getByUsername("test");
 		Assert.notNull(p);
 		Authority a = authDao.assignAuthority(p, "specialuser");
 		Assert.notNull(a);
-		Principal ptest = (Principal)authDao.loadUserByUsername(p.getUsername());
+		Principal ptest = (Principal)authDao.getByUsername(p.getUsername());
 		Assert.notEmpty(ptest.getAuthorities());
 		boolean found = false;
 		for (Authority atest : ptest.getAuthorities()) {
@@ -70,11 +68,11 @@ public class AuthenticationDaoTests extends BaseSpringDbTest {
 
 	@Test
 	public void testAuthorityDeletion1() {
-		Principal p = (Principal)authDao.loadUserByUsername("test");
+		Principal p = (Principal)authDao.getByUsername("test");
 		Assert.notNull(p);
 		Authority a = authDao.assignAuthority(p, "willbedeleted");
 		Assert.notNull(a);
-		Principal ptest = (Principal)authDao.loadUserByUsername(p.getUsername());
+		Principal ptest = (Principal)authDao.getByUsername(p.getUsername());
 		Assert.notEmpty(ptest.getAuthorities());
 		Iterator<Authority> it = ptest.getAuthorities().iterator();
 		while (it.hasNext()) {
@@ -84,7 +82,7 @@ public class AuthenticationDaoTests extends BaseSpringDbTest {
 				break;
 			}
 		}
-		ptest = (Principal)authDao.loadUserByUsername(p.getUsername());
+		ptest = (Principal)authDao.getByUsername(p.getUsername());
 		boolean found = false;
 		for (Authority atest : ptest.getAuthorities()) {
 			if (atest.getAuthority().equals("willbedeleted")) {
@@ -97,14 +95,14 @@ public class AuthenticationDaoTests extends BaseSpringDbTest {
 	
 	@Test
 	public void testAuthorityDeletion2() {
-		Principal p = (Principal)authDao.loadUserByUsername("test");
+		Principal p = (Principal)authDao.getByUsername("test");
 		Assert.notNull(p);
 		Authority a = authDao.assignAuthority(p, "willbedeleted");
 		Assert.notNull(a);
-		Principal ptest = (Principal)authDao.loadUserByUsername(p.getUsername());
+		Principal ptest = (Principal)authDao.getByUsername(p.getUsername());
 		Assert.notEmpty(ptest.getAuthorities());
 		authDao.unassignAuthority(p, "willbedeleted");
-		ptest = (Principal)authDao.loadUserByUsername(p.getUsername());
+		ptest = (Principal)authDao.getByUsername(p.getUsername());
 		boolean found = false;
 		for (Authority atest : ptest.getAuthorities()) {
 			if (atest.getAuthority().equals("willbedeleted")) {
@@ -116,9 +114,13 @@ public class AuthenticationDaoTests extends BaseSpringDbTest {
 	}
 
 	@Test
-	public void testUserDetailsService() {
+	public void testUserDetailsService1() {
 		Assert.notNull(authDao.loadUserByUsername("test"));
-		Assert.isNull(authDao.loadUserByUsername("nonexistentuser"));
+	}
+
+	@Test(expected=UsernameNotFoundException.class)
+	public void testUserDetailsService2() {
+		authDao.loadUserByUsername("nonexistentuser");
 	}
 
 }
