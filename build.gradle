@@ -48,6 +48,8 @@ subprojects {
             details.useVersion '2.1.0'
          } else if (details.requested.group == 'org.eclipse.persistence') {
             details.useVersion '2.5.2'
+         } else if (details.requested.group == 'org.mockito') {
+            details.useVersion '1.9.5'
          }
       }
    }
@@ -68,5 +70,5 @@ project(':basearch-webapp') {
 // Gradle wrapper task
 // Only used when in need to reinstall the wrapper
 task wrapper(type: Wrapper) {
-   gradleVersion = '2.1-rc-1'
+   gradleVersion = '2.1-rc-2'
 }
