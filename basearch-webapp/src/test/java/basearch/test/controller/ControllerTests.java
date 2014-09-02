@@ -43,14 +43,14 @@ public class ControllerTests extends BaseMvcTest {
 	}
 
 	@Test
-	public void testAcceptHeaderLocale1() throws Exception {
-		mockMvc.perform(get("/index.page").locale(Locale.ENGLISH))
+	public void testI18n1() throws Exception {
+		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("en")))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Welcome")));
 	}
 
 	@Test
-	public void testAcceptHeaderLocale2() throws Exception {
+	public void testI18n2() throws Exception {
 		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("es")))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Bienvenido")));

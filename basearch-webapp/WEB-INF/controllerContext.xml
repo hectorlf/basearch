@@ -14,15 +14,9 @@
 
     <mvc:annotation-driven />
 
-    <bean id="acceptHeaderLocaleResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"/>
-    <bean id="cookieBasedLocaleResolver" class="basearch.integration.CookieBasedLocaleResolver"/>
-    <bean id="sessionBasedLocaleResolver" class="basearch.integration.SessionBasedLocaleResolver">
+    <bean id="localeResolver" class="basearch.integration.CustomLocaleResolver">
+    	<constructor-arg ref="metadataDao"/>
     	<constructor-arg ref="userDao"/>
-    </bean>
-    <bean id="localeResolver" class="basearch.integration.ChainedLocaleResolver">
-    	<constructor-arg ref="sessionBasedLocaleResolver"/>
-    	<constructor-arg ref="cookieBasedLocaleResolver"/>
-    	<constructor-arg ref="acceptHeaderLocaleResolver"/>
     </bean>
     
     <context:component-scan base-package="basearch.controller"/>

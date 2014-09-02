@@ -37,7 +37,10 @@ public abstract class BaseDao {
 	/*
 	 * fluent accessors
 	 */
-	
+
+	/**
+	 * Fluent accessor for a single entity, by id or with property restrictions
+	 */
 	protected final <E extends PersistentObject> EntityAccessor<E> entity(Class<E> type) {
 		return new EntityAccessorImpl<E>(type);
 	}
@@ -86,7 +89,31 @@ public abstract class BaseDao {
 			try { return em.createQuery(q).getSingleResult(); } catch(NoResultException nre) { return null; }
 		}
 	}
-	
+
+	/**
+	 * Fluent accessor for querying a single entity, by named query or by jpql
+	 */
+	protected final <E extends PersistentObject> EntityQuerier<E> query(Class<E> type) {
+		return new EntityQuerierImpl<E>(type);
+	}
+	protected interface EntityQuerier<E extends PersistentObject> {
+		public EntityNamedQuerier<E> named(String queryName);
+	}
+	protected interface EntityNamedQuerier<E extends PersistentObject> {
+		public List<E> list();
+	}
+	private class EntityQuerierImpl<E extends PersistentObject> implements EntityQuerier<E>, EntityNamedQuerier<E> {
+		private final Class<E> type;
+		private TypedQuery<E> query;
+		public EntityQuerierImpl(Class<E> type) { this.type = type; }
+		@Override public EntityNamedQuerier<E> named(String queryName) {
+			assert(queryName != null && queryName.length() > 0);
+			this.query = em.createNamedQuery(queryName, type);
+			return this;
+		}
+		@Override public List<E> list() { return this.query.getResultList(); }
+	}
+
 	/*
 	 * persistence-forwarded methods
 	 */
@@ -171,7 +198,7 @@ public abstract class BaseDao {
 	/*
 	 * query methods
 	 */
-	
+
 	/**
 	 * Lists entities of type T having it's properties matched with values from params. Params can't be null.
 	 * Property names and values arrays must be of the same size and have the same internal order.

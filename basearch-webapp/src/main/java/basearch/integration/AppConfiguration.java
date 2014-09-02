@@ -26,6 +26,7 @@ public class AppConfiguration {
 	public ResourceBundleMessageSource messageSource() {
 		ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
 		ms.setBasenames(messageSourceBasenames);
+		ms.setFallbackToSystemLocale(false);
 		return ms;
 	}
 

@@ -16,7 +16,7 @@ public class MetadataDaoImpl extends BaseDao implements MetadataDao {
 
 	@Override
 	public List<Language> findAllLanguages() {
-		List<Language> results = allOf(Language.class);
+		List<Language> results = query(Language.class).named(Language.QUERY_ALL).list();
 		if (results == null || results.size() == 0) return Collections.emptyList();
 		return results;
 	}
