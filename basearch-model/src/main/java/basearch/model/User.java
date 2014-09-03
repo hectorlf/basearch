@@ -9,17 +9,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.CacheIndex;
-import org.eclipse.persistence.annotations.ReadOnly;
 
 @Entity
 @Table(name="users")
-@ReadOnly
 @CacheIndex(columnNames={"username"}, updateable=false)
 public class User extends PersistentObject {
 
 	@Basic(optional=false)
 	@Column(name="username",length=50,nullable=false,insertable=false,updatable=false,unique=true)
-	@CacheIndex(updateable=false)
 	private String username;
 	
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)

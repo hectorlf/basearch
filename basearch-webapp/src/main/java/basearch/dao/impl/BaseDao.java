@@ -223,11 +223,15 @@ public abstract class BaseDao {
 	protected final <T extends PersistentObject> EntityGraph<T> entityGraphFor(Class<T> type) {
 		return em.createEntityGraph(type);
 	}
-	
+
+	protected final <T extends PersistentObject> TypedQuery<T> jpqlQueryFor(Class<T> type, String query) {
+		return em.createQuery(query, type);
+	}
+
 	protected final Query nativeQueryFor(String query) {
 		return em.createNativeQuery(query);
 	}
-	
+
 	protected final CriteriaBuilder criteriaBuilder() {
 		return em.getCriteriaBuilder();
 	}
