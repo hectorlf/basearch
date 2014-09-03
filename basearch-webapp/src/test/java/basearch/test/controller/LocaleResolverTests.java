@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
+
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import basearch.dao.MetadataDao;
 import basearch.dao.UserDao;
+import basearch.integration.Constants;
 import basearch.integration.CustomLocaleResolver;
 import basearch.model.Language;
 import basearch.model.User;
@@ -77,7 +80,7 @@ public class LocaleResolverTests extends BaseMvcTest {
 	public void testAcceptHeaderLocale2() throws Exception {
 		mockMvc.perform(get("/index.page").header("Accept-Language","en-GB"))
 			.andExpect(status().isOk())
-			.andExpect(content().string(containsString("Welcome")));
+			.andExpect(content().string(containsString("Bienvenido")));
 	}
 
 	@Test
@@ -90,6 +93,46 @@ public class LocaleResolverTests extends BaseMvcTest {
 	@Test
 	public void testAcceptHeaderLocale4() throws Exception {
 		mockMvc.perform(get("/index.page").header("Accept-Language","pt-BR, pt, en"))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Bienvenido")));
+	}
+
+	@Test
+	public void testAcceptHeaderLocale5() throws Exception {
+		// this should kick in as an accept-language locale
+		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("en-GB")))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Welcome")));
+	}
+
+	@Test
+	public void testCookieLocale1() throws Exception {
+		Cookie c = new Cookie(Constants.LOCALE_RESOLVER_COOKIE_NAME, "es-ES");
+		mockMvc.perform(get("/index.page").cookie(c))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Bienvenido")));
+	}
+
+	@Test
+	public void testCookieLocale2() throws Exception {
+		Cookie c = new Cookie(Constants.LOCALE_RESOLVER_COOKIE_NAME, "en-GB");
+		mockMvc.perform(get("/index.page").cookie(c))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Welcome")));
+	}
+
+	@Test
+	public void testCookieLocale3() throws Exception {
+		Cookie c = new Cookie(Constants.LOCALE_RESOLVER_COOKIE_NAME, "pt-BR");
+		mockMvc.perform(get("/index.page").cookie(c))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Bienvenido")));
+	}
+
+	@Test
+	public void testCookieLocale4() throws Exception {
+		Cookie c = new Cookie(Constants.LOCALE_RESOLVER_COOKIE_NAME, "arriquitaun");
+		mockMvc.perform(get("/index.page").cookie(c))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Bienvenido")));
 	}
