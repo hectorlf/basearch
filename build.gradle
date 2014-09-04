@@ -31,7 +31,7 @@ subprojects {
          } else if (details.requested.group == 'javax.inject') {
             details.useVersion '1'
          } else if (details.requested.group == 'org.springframework') {
-            details.useVersion '4.0.6.RELEASE'
+            details.useVersion '4.0.7.RELEASE'
          } else if (details.requested.group == 'org.springframework.security') {
             details.useVersion '3.2.5.RELEASE'
          } else if (details.requested.group == 'org.thymeleaf') {
@@ -70,5 +70,5 @@ project(':basearch-webapp') {
 // Gradle wrapper task
 // Only used when in need to reinstall the wrapper
 task wrapper(type: Wrapper) {
-   gradleVersion = '2.1-rc-3'
+   gradleVersion = '2.1-rc-4'
 }
