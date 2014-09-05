@@ -31,7 +31,7 @@ subprojects {
          } else if (details.requested.group == 'javax.inject') {
             details.useVersion '1'
          } else if (details.requested.group == 'org.springframework') {
-            details.useVersion '4.0.7.RELEASE'
+            details.useVersion '4.1.0.RELEASE'
          } else if (details.requested.group == 'org.springframework.security') {
             details.useVersion '3.2.5.RELEASE'
          } else if (details.requested.group == 'org.thymeleaf') {
@@ -39,7 +39,7 @@ subprojects {
          } else if (details.requested.group == 'org.apache.bval') {
             details.useVersion '0.5'
          } else if (details.requested.group == 'org.aspectj') {
-            details.useVersion '1.8.1'
+            details.useVersion '1.8.2'
          } else if (details.requested.group == 'junit') {
             details.useVersion '4.11'
          } else if (details.requested.group == 'javax.servlet') {
