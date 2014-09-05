@@ -1,7 +1,6 @@
 package basearch.test.controller;
 
 import static org.hamcrest.core.StringContains.containsString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,7 +23,6 @@ import basearch.dao.UserDao;
 import basearch.integration.Constants;
 import basearch.integration.CustomLocaleResolver;
 import basearch.model.Language;
-import basearch.model.User;
 import basearch.test.BaseMvcTest;
 
 @ContextConfiguration(classes=LocaleResolverTests.Config.class)
@@ -52,9 +50,7 @@ public class LocaleResolverTests extends BaseMvcTest {
 
 		@Bean
 		public UserDao userDao() {
-			User stubUser = new User();
 			UserDao mock = mock(UserDao.class);
-			when(mock.getByUsername(eq("test"))).thenReturn(stubUser);
 			return mock;
 		}
 
@@ -66,7 +62,14 @@ public class LocaleResolverTests extends BaseMvcTest {
 
 	@Test
 	public void testSessionLocale() throws Exception {
-		//TODO
+		// tested in the security tests
+	}
+
+	@Test
+	public void testNoLocale() throws Exception {
+		mockMvc.perform(get("/index.page").locale(null))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Bienvenido")));
 	}
 
 	@Test

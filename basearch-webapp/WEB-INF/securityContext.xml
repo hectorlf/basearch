@@ -14,7 +14,7 @@
 		<intercept-url pattern="/login.page" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<intercept-url pattern="/index.page" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<intercept-url pattern="/*" access="ROLE_ADMIN"/>
-		<form-login login-page="/login.page" login-processing-url="/login.action" username-parameter="username" password-parameter="password" authentication-failure-url="/login.page?login_error=1" default-target-url="/secured.page"/>
+		<form-login login-page="/login.page" login-processing-url="/login.action" username-parameter="username" password-parameter="password" authentication-failure-url="/login.page?error=1" default-target-url="/secured.page"/>
 		<logout logout-url="/logout.action" logout-success-url="/index.page"/>
 		<access-denied-handler error-page="/unauthorized.page"/>
 	</http>
