@@ -86,3 +86,5 @@ arquillian {
       }
    }
 }
+
+run.dependsOn "arquillianRunJetty"

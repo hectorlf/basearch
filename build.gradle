@@ -54,8 +54,12 @@ subprojects {
       }
    }
 
-   // marker tasks
+
+   // marker task for production specific builds
    task release
+
+   // arquillianRun alias
+   task run
 }
 
 project(':basearch-webapp') {
