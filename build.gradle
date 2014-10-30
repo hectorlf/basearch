@@ -18,8 +18,7 @@ subprojects {
       compile("org.eclipse.persistence:org.eclipse.persistence.jpa:")
       compile("javax.validation:validation-api:1.0.0.GA")
       compile("org.springframework.security:spring-security-core:")
-
-      runtime("ch.qos.logback:logback-classic:1.1.2")
+      compile("ch.qos.logback:logback-classic:1.1.2")
    }
 
    configurations.all {
