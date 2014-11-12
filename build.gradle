@@ -32,7 +32,7 @@ subprojects {
          } else if (details.requested.group == 'javax.inject') {
             details.useVersion '1'
          } else if (details.requested.group == 'org.springframework') {
-            details.useVersion '4.1.1.RELEASE'
+            details.useVersion '4.1.2.RELEASE'
          } else if (details.requested.group == 'org.springframework.security') {
             details.useVersion '3.2.5.RELEASE'
          } else if (details.requested.group == 'org.thymeleaf') {
