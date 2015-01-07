@@ -26,7 +26,7 @@ subprojects {
          if (details.requested.group == 'org.hsqldb') {
             details.useVersion '2.3.2'
          } else if (details.requested.group == 'org.slf4j') {
-            details.useVersion '1.7.7'
+            details.useVersion '1.7.10'
          } else if (details.requested.group == 'commons-logging') {
             details.useVersion '1.1.3'
          } else if (details.requested.group == 'javax.inject') {
@@ -36,7 +36,7 @@ subprojects {
          } else if (details.requested.group == 'org.springframework.security') {
             details.useVersion '3.2.5.RELEASE'
          } else if (details.requested.group == 'org.thymeleaf') {
-            details.useVersion '2.1.3.RELEASE'
+            details.useVersion '2.1.4.RELEASE'
          } else if (details.requested.group == 'org.apache.bval') {
             details.useVersion '0.5'
          } else if (details.requested.group == 'org.aspectj') {
