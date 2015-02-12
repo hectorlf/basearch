@@ -1,1 +1,1 @@
-include 'basearch-model', 'basearch-webapp'
+include 'basearch-webapp'
