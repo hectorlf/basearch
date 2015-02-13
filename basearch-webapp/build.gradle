@@ -46,12 +46,12 @@ dependencies {
 }
 
 compileJava {
-	destinationDir = new File(buildDir, 'unwoven-classes')
+	destinationDir file("$buildDir/compiled-classes")
 }
 
 war {
    from 'WebContent'
-   webInf { from 'WEB-INF', new File(buildDir, 'tmp-web-inf') } // adds a file-set to the WEB-INF dir.
+   webInf { from 'WEB-INF', "$buildDir/tmp-web-inf" } // adds a file-set to the WEB-INF dir.
    metaInf { from 'META-INF' } // adds a file-set to the META-INF dir.
 }
 
@@ -66,7 +66,7 @@ task processDevelopmentResources(type: Copy, dependsOn: processResources) {
 }
 task processDevelopmentWebInf(type: Copy, dependsOn: processResources) {
    from 'env/dev/web-inf'
-   into new File(buildDir, 'tmp-web-inf')
+   into "$buildDir/tmp-web-inf"
    onlyIf { !gradle.taskGraph.hasTask(release) }
 }
 task processReleaseResources(type: Copy, dependsOn: processResources) {
@@ -78,6 +78,20 @@ task processReleaseResources(type: Copy, dependsOn: processResources) {
 
 // jpa weaving
 
+task copyNonPersistentClasses(type: Copy, dependsOn: compileJava) {
+   from("$buildDir/compiled-classes") {
+      exclude '**/' + entitiesBasePackage.replaceAll('\\.','/') + '/**'
+   } 
+   into sourceSets.main.output.classesDir
+   includeEmptyDirs = false
+}
+task copyPersistentClasses(type: Copy, dependsOn: compileJava) {
+   from("$buildDir/compiled-classes") {
+      include '**/' + entitiesBasePackage.replaceAll('\\.','/') + '/**'
+   } 
+   into "$buildDir/unwoven-persistent-classes"
+   includeEmptyDirs = false
+}
 task weaveJpaEntities(type: JavaExec) {
    main = 'org.eclipse.persistence.tools.weaving.jpa.StaticWeave'
    classpath configurations.weave.incoming.files
@@ -87,14 +101,14 @@ task weaveJpaEntities(type: JavaExec) {
    args configurations.compile.incoming.files.asPath
    args '-loglevel'
    args 'INFO'
-   args compileJava.destinationDir.absolutePath
+   args copyPersistentClasses.destinationDir.absolutePath
    args sourceSets.main.output.classesDir.absolutePath
    
-   inputs.files fileTree(compileJava.destinationDir),fileTree(processResources.destinationDir).matching({pattern -> pattern.include('**/META-INF/persistence.xml')})
+   inputs.files fileTree(copyPersistentClasses.destinationDir),fileTree(processResources.destinationDir).matching({pattern -> pattern.include('**/META-INF/persistence.xml')})
    outputs.dir sourceSets.main.output.classesDir
 }
-weaveJpaEntities.dependsOn compileJava,processResources,processDevelopmentResources,processDevelopmentWebInf,processReleaseResources
-classes.dependsOn weaveJpaEntities
+weaveJpaEntities.dependsOn copyPersistentClasses,processDevelopmentResources,processDevelopmentWebInf,processReleaseResources
+classes.dependsOn copyNonPersistentClasses,weaveJpaEntities
 
 
 
@@ -137,5 +151,5 @@ task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
    source sourceSets.main.java.matching({pattern -> pattern.include('**/' + entitiesBasePackage.replaceAll('\\.','/') + '/**')})
    destinationDir = sourceSets.main.java.getSrcDirs().iterator().next()
    options.compilerArgs << '-proc:only'
-   options.compilerArgs << '-Aeclipselink.persistencexml=' + projectDir.absolutePath + '/env/dev/resources/META-INF/persistence.xml'
+   options.compilerArgs << '-Aeclipselink.persistencexml=' + "$projectDir/env/dev/resources/META-INF/persistence.xml"
 }
