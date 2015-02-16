@@ -1,5 +1,6 @@
 apply plugin: 'war'
 apply plugin: 'arquillian'
+apply plugin: 'eclipse-wtp'
 
 
 // project defs
