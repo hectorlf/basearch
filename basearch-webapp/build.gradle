@@ -58,7 +58,7 @@ compileJava {
 
 war {
    from 'WebContent'
-   webInf { from 'WEB-INF', "$buildDir/tmp-web-inf" } // adds a file-set to the WEB-INF dir.
+   webInf { from 'WEB-INF', "$buildDir/env-dependent-web-inf" } // adds a file-set to the WEB-INF dir.
    metaInf { from 'META-INF' } // adds a file-set to the META-INF dir.
 }
 
@@ -73,12 +73,17 @@ task processDevelopmentResources(type: Copy, dependsOn: processResources) {
 }
 task processDevelopmentWebInf(type: Copy, dependsOn: processResources) {
    from 'env/dev/web-inf'
-   into "$buildDir/tmp-web-inf"
+   into "$buildDir/env-dependent-web-inf"
    onlyIf { !gradle.taskGraph.hasTask(release) }
 }
 task processReleaseResources(type: Copy, dependsOn: processResources) {
    from 'env/prod/resources'
    into processResources.destinationDir
+   onlyIf { gradle.taskGraph.hasTask(release) }
+}
+task processReleaseWebInf(type: Copy, dependsOn: processResources) {
+   from 'env/prod/web-inf'
+   into "$buildDir/env-dependent-web-inf"
    onlyIf { gradle.taskGraph.hasTask(release) }
 }
 
@@ -112,7 +117,7 @@ task weaveJpaEntities(type: JavaExec) {
    inputs.files fileTree(copyPersistentClasses.destinationDir),fileTree(processResources.destinationDir).matching({pattern -> pattern.include('**/META-INF/persistence.xml')})
    outputs.dir sourceSets.main.output.classesDir
 }
-weaveJpaEntities.dependsOn copyPersistentClasses,processDevelopmentResources,processDevelopmentWebInf,processReleaseResources
+weaveJpaEntities.dependsOn copyPersistentClasses,processDevelopmentResources,processDevelopmentWebInf,processReleaseResources,processReleaseWebInf
 classes.dependsOn copyNonPersistentClasses,weaveJpaEntities
 
 
