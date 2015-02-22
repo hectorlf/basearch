@@ -54,10 +54,14 @@ subprojects {
 
 
    // marker task for production specific builds
-   task release
+   task release {
+	   outputs.upToDateWhen { false }
+   }
 
    // jetty-runner alias
-   task run
+   task run {
+	   outputs.upToDateWhen { false }
+   }
 
 }
 
