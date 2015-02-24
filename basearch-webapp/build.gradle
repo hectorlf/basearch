@@ -71,7 +71,7 @@ task processDevelopmentResources(type: Copy, dependsOn: processResources) {
    into processResources.destinationDir
    onlyIf { !gradle.taskGraph.hasTask(release) }
 }
-task processDevelopmentWebInf(type: Copy, dependsOn: processResources) {
+task processDevelopmentWebInf(type: Sync, dependsOn: processResources) {
    from 'env/dev/web-inf'
    into "$buildDir/env-dependent-web-inf"
    onlyIf { !gradle.taskGraph.hasTask(release) }
@@ -81,7 +81,7 @@ task processReleaseResources(type: Copy, dependsOn: processResources) {
    into processResources.destinationDir
    onlyIf { gradle.taskGraph.hasTask(release) }
 }
-task processReleaseWebInf(type: Copy, dependsOn: processResources) {
+task processReleaseWebInf(type: Sync, dependsOn: processResources) {
    from 'env/prod/web-inf'
    into "$buildDir/env-dependent-web-inf"
    onlyIf { gradle.taskGraph.hasTask(release) }
