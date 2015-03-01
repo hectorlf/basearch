@@ -9,8 +9,8 @@
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <jdbc:embedded-database id="dataSource" type="HSQL">
-        <jdbc:script location="classpath:db-ddl.sql"/>
-        <jdbc:script location="classpath:db-initial-data.sql"/>
+        <jdbc:script location="classpath:initial-ddl.sql"/>
+        <jdbc:script location="classpath:initial-data.sql"/>
     </jdbc:embedded-database>
 
 </beans>
