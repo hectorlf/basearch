@@ -47,7 +47,7 @@ dependencies {
    metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:'
    metamodel 'org.springframework.security:spring-security-core:'
    
-   jettyRunner 'org.eclipse.jetty:jetty-runner:9.3.0.M1'
+   jettyRunner 'org.eclipse.jetty:jetty-runner:9.2.9+'
    jettyRuntimeClasspath 'org.apache.commons:commons-dbcp2:2.0.1'
    jettyRuntimeClasspath 'org.hsqldb:hsqldb:'
 }
@@ -128,17 +128,34 @@ classes.dependsOn copyNonPersistentClasses,weaveJpaEntities
 
 // local jetty run
  
-task deployOnJetty(type: JavaExec, dependsOn: assemble) {
+task deployOnLocalJetty(type: JavaExec, dependsOn: assemble) {
    classpath configurations.jettyRunner.incoming.files
    main = '-jar'
    args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-runner*.jar')}).singleFile.absolutePath
    configurations.jettyRuntimeClasspath.incoming.files.asFileTree.visit({
       fileDetails -> args '--jar'; args fileDetails.file.absolutePath
    })
+   args '--stop-port'
+   args '8181'
+   args '--stop-key'
+   args 'abc123'
+   args '--out'
+   args "$buildDir/jetty-output.log"
    args war.archivePath
 }
+task stopLocalJetty(type: JavaExec) {
+   classpath configurations.jettyRunner.incoming.files
+   main = '-jar'
+   args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-runner*.jar')}).singleFile.absolutePath
+   args '--stop-port'
+   args '8181'
+   args '--stop-key'
+   args 'abc123'
+   args '--stop'
+}
 
-run.dependsOn deployOnJetty
+run.dependsOn deployOnLocalJetty
+stop.dependsOn stopLocalJetty
 
 
 // test resources

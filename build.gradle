@@ -62,6 +62,9 @@ subprojects {
    task run {
 	   outputs.upToDateWhen { false }
    }
+   task stop {
+	   outputs.upToDateWhen { false }
+   }
 
 }
 
