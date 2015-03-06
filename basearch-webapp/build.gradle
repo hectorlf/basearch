@@ -141,7 +141,12 @@ task deployOnLocalJetty(type: JavaExec, dependsOn: assemble) {
    args 'abc123'
    args '--out'
    args "$buildDir/jetty-output.log"
-   args war.archivePath
+   
+   doFirst {
+      args '--config'
+      args fileTree(processResources.destinationDir).matching({pattern -> pattern.include('**/jetty.xml')}).singleFile.absolutePath
+      args war.archivePath
+   }
 }
 task stopLocalJetty(type: JavaExec) {
    classpath configurations.jettyRunner.incoming.files
