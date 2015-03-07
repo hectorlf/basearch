@@ -30,7 +30,7 @@
     </New>
 
     <New id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory">
-      <Set name="KeyStorePath">path al keystore</Set>
+      <Set name="KeyStorePath">${keystorePath}</Set>
       <Set name="KeyStorePassword">password</Set>
       <Set name="KeyManagerPassword">password</Set>
     </New>
