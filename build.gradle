@@ -45,7 +45,7 @@ subprojects {
          } else if (details.requested.name == 'javax.persistence') {
             details.useVersion '2.1.0'
          } else if (details.requested.group == 'org.eclipse.persistence') {
-            details.useVersion '2.6.0-RC1'
+            details.useVersion '2.6.0'
          } else if (details.requested.group == 'org.mockito') {
             details.useVersion '1.9.5'
          }
