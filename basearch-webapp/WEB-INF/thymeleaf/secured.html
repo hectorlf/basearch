@@ -17,6 +17,7 @@
 </head>
 <body>
 	<h1>ROLE_ADMIN secured page</h1>
+	<form action="#" method="post" th:action="@{/logout.action}"><p><input type="submit" th:value="#{logout}"/></p></form>
 	<p th:text="${#locale}">El locale que sea</p>
 </body>
 </html>
