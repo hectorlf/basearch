@@ -37,7 +37,7 @@ subprojects {
          } else if (details.requested.group == 'org.apache.bval') {
             details.useVersion '0.5'
          } else if (details.requested.group == 'org.aspectj') {
-            details.useVersion '1.8.2'
+            details.useVersion '1.8.5'
          } else if (details.requested.group == 'junit') {
             details.useVersion '4.12'
          } else if (details.requested.group == 'javax.servlet') {
@@ -47,7 +47,7 @@ subprojects {
          } else if (details.requested.group == 'org.eclipse.persistence') {
             details.useVersion '2.6.0'
          } else if (details.requested.group == 'org.mockito') {
-            details.useVersion '1.9.5'
+            details.useVersion '2.0.5-beta'
          }
       }
    }
