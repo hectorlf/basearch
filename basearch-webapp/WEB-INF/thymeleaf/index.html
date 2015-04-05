@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -18,7 +18,8 @@
 <body>
 	<h1>Base architecture</h1>
 	<h2 th:text="#{welcome}">Texto de bienvenida localizado</h2>
-	<a href="#" th:href="@{/secured.page}">/secured.page</a> user/pass: admin/admin - user/user
-	<p th:text="${#locale}">El locale que sea</p>
+	<p><a href="#" th:href="@{/secured.page}">/secured.page</a> user/pass: admin/admin - user/user</p>
+	<p>Locale: <span th:text="${#locale}">El locale que sea</span></p>
+	<p sec:authorize="isAuthenticated()">User: <span th:text="${#authentication.name}">El usuario autentificado</span></p>
 </body>
 </html>

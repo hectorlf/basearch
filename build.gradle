@@ -34,6 +34,8 @@ subprojects {
             details.useVersion '4.0.0.RELEASE'
          } else if (details.requested.group == 'org.thymeleaf') {
             details.useVersion '2.1.4.RELEASE'
+         } else if (details.requested.group == 'org.thymeleaf.extras') {
+		 	if (details.requested.name == 'thymeleaf-extras-springsecurity4') details.useVersion '2.1.2.RELEASE'
          } else if (details.requested.group == 'org.apache.bval') {
             details.useVersion '0.5'
          } else if (details.requested.group == 'org.aspectj') {
@@ -42,10 +44,9 @@ subprojects {
             details.useVersion '4.12'
          } else if (details.requested.group == 'javax.servlet') {
             details.useVersion '3.0.1'
-         } else if (details.requested.name == 'javax.persistence') {
-            details.useVersion '2.1.0'
          } else if (details.requested.group == 'org.eclipse.persistence') {
-            details.useVersion '2.6.0'
+		 	if (details.requested.name == 'javax.persistence') details.useVersion '2.1.0'
+            else details.useVersion '2.6.0'
          } else if (details.requested.group == 'org.mockito') {
             details.useVersion '2.0.5-beta'
          }
