@@ -17,15 +17,15 @@
 
     <import resource="dataSource.xml"/>
 
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-	<aop:config>
+    <aop:config>
         <aop:pointcut id="serviceMethods" expression="execution(* basearch.service.*Service.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
@@ -35,6 +35,8 @@
             <tx:method name=""/>
         </tx:attributes>
     </tx:advice>
+
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
     <context:component-scan base-package="basearch.integration, basearch.dao, basearch.service"/>
 
