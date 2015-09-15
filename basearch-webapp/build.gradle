@@ -50,6 +50,7 @@ dependencies {
    
    jettyRunner 'org.eclipse.jetty:jetty-runner:9.2.10.v20150310'
    jettyRunner 'org.eclipse.jetty:jetty-start:9.2.10.v20150310'
+   jettyRunner 'org.springframework:springloaded:1.2.4.RELEASE'
    jettyRuntimeClasspath 'org.apache.commons:commons-dbcp2:2.1'
    jettyRuntimeClasspath 'org.hsqldb:hsqldb'
 }
@@ -132,7 +133,9 @@ classes.dependsOn copyNonPersistentClasses,weaveJpaEntities
  
 task deployOnLocalJetty(type: JavaExec, dependsOn: assemble) {
    classpath configurations.jettyRunner.incoming.files
-   main = '-jar'
+   main = '-javaagent:'+configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/springloaded*.jar')}).singleFile.absolutePath
+   args '-noverify'
+   args '-jar'
    args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-runner*.jar')}).singleFile.absolutePath
    configurations.jettyRuntimeClasspath.incoming.files.asFileTree.visit({
       fileDetails -> args '--jar'; args fileDetails.file.absolutePath
