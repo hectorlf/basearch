@@ -179,9 +179,10 @@ task stopLocalJetty(type: JavaExec) {
    args 'STOP.KEY=abc123'
    args '--stop'
 }
+deployOnLocalJetty.mustRunAfter classes
+deployOnLocalJetty.mustRunAfter stopLocalJetty
 run.dependsOn deployOnLocalJetty
 stop.dependsOn stopLocalJetty
-deployOnLocalJetty.mustRunAfter stopLocalJetty
 restart.dependsOn deployOnLocalJetty, stopLocalJetty
 
 
