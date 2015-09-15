@@ -164,9 +164,10 @@ task stopLocalJetty(type: JavaExec) {
    args 'STOP.KEY=abc123'
    args '--stop'
 }
-
 run.dependsOn deployOnLocalJetty
 stop.dependsOn stopLocalJetty
+deployOnLocalJetty.mustRunAfter stopLocalJetty
+restart.dependsOn deployOnLocalJetty, stopLocalJetty
 
 
 // test resources
