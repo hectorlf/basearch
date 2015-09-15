@@ -28,7 +28,7 @@ public class MvcConfig {
 	@Bean
 	public ServletContextTemplateResolver templateResolver() {
 		ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
-		resolver.setPrefix("/WEB-INF/thymeleaf");
+		resolver.setPrefix("/WebContent/WEB-INF/thymeleaf");
 		resolver.setTemplateMode("HTML5");
 		return resolver;
 	}
