@@ -49,6 +49,7 @@ dependencies {
    metamodel 'org.springframework.security:spring-security-core'
    
    jettyRunner 'org.eclipse.jetty:jetty-runner:9.2.10.v20150310'
+   jettyRunner 'org.eclipse.jetty:jetty-start:9.2.10.v20150310'
    jettyRuntimeClasspath 'org.apache.commons:commons-dbcp2:2.1'
    jettyRuntimeClasspath 'org.hsqldb:hsqldb'
 }
@@ -158,11 +159,9 @@ task deployOnLocalJetty(type: JavaExec, dependsOn: assemble) {
 task stopLocalJetty(type: JavaExec) {
    classpath configurations.jettyRunner.incoming.files
    main = '-jar'
-   args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-runner*.jar')}).singleFile.absolutePath
-   args '--stop-port'
-   args '8181'
-   args '--stop-key'
-   args 'abc123'
+   args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-start*.jar')}).singleFile.absolutePath
+   args 'STOP.PORT=8181'
+   args 'STOP.KEY=abc123'
    args '--stop'
 }
 
