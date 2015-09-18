@@ -162,7 +162,7 @@ task deployOnLocalJetty(type: JavaExec) {
    args "$buildDir/jetty.xml"
    args "$buildDir/env-dependent-webcontent"
    
-   doFirst {println(sourceSets.main.output.classesDir);
+   doFirst {
       copy {
          from "$rootDir/jetty/jetty.xml"; into "$buildDir"; expand(keystorePath: "$buildDir/key.store")
       }
