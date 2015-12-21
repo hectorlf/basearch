@@ -58,7 +58,7 @@ dependencies {
    jettyRunner 'org.eclipse.jetty:jetty-runner:9.2.10.v20150310'
    jettyRunner 'org.eclipse.jetty:jetty-start:9.2.10.v20150310'
    jettyRunner 'org.springframework:springloaded:1.2.5.RELEASE'
-   jettyRuntimeClasspath 'org.apache.commons:commons-dbcp2:2.1'
+   jettyRuntimeClasspath 'org.apache.commons:commons-dbcp2:2.1.1'
    jettyRuntimeClasspath 'org.hsqldb:hsqldb'
 }
 
@@ -66,8 +66,8 @@ configurations.all {
    resolutionStrategy.dependencySubstitution {
       substitute module('org.hsqldb:hsqldb') with module('org.hsqldb:hsqldb:2.3.3')
       substitute module('org.eclipse.persistence:javax.persistence') with module('org.eclipse.persistence:javax.persistence:2.1.0')
-      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa') with module('org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.1')
-      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor') with module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.1')
+      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa') with module('org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2-RC1')
+      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor') with module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.2-RC1')
       substitute module('org.springframework:spring-webmvc') with module('org.springframework:spring-webmvc:4.2.4.RELEASE')
       substitute module('org.springframework:spring-tx') with module('org.springframework:spring-tx:4.2.4.RELEASE')
       substitute module('org.springframework:spring-orm') with module('org.springframework:spring-orm:4.2.4.RELEASE')
