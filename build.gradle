@@ -66,8 +66,8 @@ configurations.all {
    resolutionStrategy.dependencySubstitution {
       substitute module('org.hsqldb:hsqldb') with module('org.hsqldb:hsqldb:2.3.3')
       substitute module('org.eclipse.persistence:javax.persistence') with module('org.eclipse.persistence:javax.persistence:2.1.0')
-      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa') with module('org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2-RC1')
-      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor') with module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.2-RC1')
+      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa') with module('org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2')
+      substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor') with module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.2')
       substitute module('org.springframework:spring-webmvc') with module('org.springframework:spring-webmvc:4.2.4.RELEASE')
       substitute module('org.springframework:spring-tx') with module('org.springframework:spring-tx:4.2.4.RELEASE')
       substitute module('org.springframework:spring-orm') with module('org.springframework:spring-orm:4.2.4.RELEASE')
