@@ -20,8 +20,8 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import basearch.dao.MetadataDao;
 import basearch.dao.UserDao;
-import basearch.integration.Constants;
-import basearch.integration.CustomLocaleResolver;
+import basearch.Constants;
+import basearch.CustomLocaleResolver;
 import basearch.model.Language;
 import basearch.test.BaseMvcTest;
 

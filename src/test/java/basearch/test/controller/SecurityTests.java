@@ -37,7 +37,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import basearch.dao.MetadataDao;
 import basearch.dao.UserDao;
-import basearch.integration.CustomLocaleResolver;
+import basearch.CustomLocaleResolver;
 import basearch.model.Language;
 import basearch.model.User;
 import basearch.test.BaseSpringTest;

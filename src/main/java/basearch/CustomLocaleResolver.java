@@ -1,4 +1,4 @@
-package basearch.integration;
+package basearch;
 
 import java.util.Enumeration;
 import java.util.List;

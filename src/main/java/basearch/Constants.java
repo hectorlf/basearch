@@ -1,4 +1,4 @@
-package basearch.integration;
+package basearch;
 
 public final class Constants {
 	
