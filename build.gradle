@@ -15,8 +15,6 @@ repositories {
 configurations {
    weave
    metamodel
-   jettyRunner
-   jettyRuntimeClasspath
 }
 
 dependencies {
@@ -54,12 +52,6 @@ dependencies {
    metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa'
    metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor'
    metamodel 'org.springframework.security:spring-security-core'
-   
-   jettyRunner 'org.eclipse.jetty:jetty-runner:9.2.10.v20150310'
-   jettyRunner 'org.eclipse.jetty:jetty-start:9.2.10.v20150310'
-   jettyRunner 'org.springframework:springloaded:1.2.5.RELEASE'
-   jettyRuntimeClasspath 'org.apache.commons:commons-dbcp2:2.1.1'
-   jettyRuntimeClasspath 'org.hsqldb:hsqldb'
 }
 
 configurations.all {
@@ -84,22 +76,8 @@ configurations.all {
    }
 }
 
-// marker task for production specific builds
-task release {
-   outputs.upToDateWhen { false }
-}
-
-// jetty-runner alias
-task run {
-   outputs.upToDateWhen { false }
-}
-task stop {
-   outputs.upToDateWhen { false }
-}
-task restart {
-   outputs.upToDateWhen { false }
-}
-
+// marker task
+task release
 
 // project defs
 def entitiesBasePackage = 'basearch.model'
@@ -182,58 +160,6 @@ task assembleEnvDependentWebContent(type: Copy, dependsOn: [copyNonPersistentCla
    into "$buildDir/env-dependent-webcontent"
 }
 classes.dependsOn assembleEnvDependentWebContent
-
-
-// local jetty run
-
-task deployOnLocalJetty(type: JavaExec) {
-   classpath configurations.jettyRunner.incoming.files
-   main = '-javaagent:'+configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/springloaded*.jar')}).singleFile.absolutePath
-   args '-noverify'
-   args '-jar'
-   args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-runner*.jar')}).singleFile.absolutePath
-   configurations.jettyRuntimeClasspath.incoming.files.asFileTree.visit({
-      fileDetails -> args '--jar'; args fileDetails.file.absolutePath
-   })
-   configurations.runtime.incoming.files.asFileTree.visit({
-      fileDetails -> args '--jar'; args fileDetails.file.absolutePath
-   })
-   args '--classes'
-   args sourceSets.main.output.classesDir
-   args '--classes'
-   args sourceSets.main.output.resourcesDir
-   args '--stop-port'
-   args '8181'
-   args '--stop-key'
-   args 'abc123'
-   args '--out'
-   args "$buildDir/jetty-output.log"
-   args '--config'
-   args "$buildDir/jetty.xml"
-   args "$buildDir/env-dependent-webcontent"
-
-   doFirst {
-      copy {
-         from "$rootDir/jetty/jetty.xml"; into "$buildDir"; expand(keystorePath: "$buildDir/key.store")
-      }
-      copy {
-         from "$rootDir/jetty/key.store"; into "$buildDir"
-      }
-   }
-}
-task stopLocalJetty(type: JavaExec) {
-   classpath configurations.jettyRunner.incoming.files
-   main = '-jar'
-   args configurations.jettyRunner.incoming.files.asFileTree.matching({pattern -> pattern.include('**/jetty-start*.jar')}).singleFile.absolutePath
-   args 'STOP.PORT=8181'
-   args 'STOP.KEY=abc123'
-   args '--stop'
-}
-deployOnLocalJetty.mustRunAfter classes
-deployOnLocalJetty.mustRunAfter stopLocalJetty
-run.dependsOn deployOnLocalJetty
-stop.dependsOn stopLocalJetty
-restart.dependsOn deployOnLocalJetty, stopLocalJetty
 
 
 // test resources
