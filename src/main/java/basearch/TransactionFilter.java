@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.web.context.ContextLoaderListener;
 
+@WebFilter(urlPatterns={"*.page","*.action"})
 public class TransactionFilter implements Filter {
 
 	private static final Logger logger = LoggerFactory.getLogger(TransactionFilter.class);
