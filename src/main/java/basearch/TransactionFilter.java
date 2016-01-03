@@ -21,7 +21,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.web.context.ContextLoaderListener;
 
-@WebFilter(urlPatterns={"*.page","*.action"})
+@WebFilter(urlPatterns={"*.page","*.action","/login","/logout"})
 public class TransactionFilter implements Filter {
 
 	private static final Logger logger = LoggerFactory.getLogger(TransactionFilter.class);
