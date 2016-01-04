@@ -102,11 +102,6 @@ task processDevelopmentWebInf(type: Sync, dependsOn: processResources) {
    into "$buildDir/env-dependent-webcontent/WEB-INF"
    onlyIf { !gradle.taskGraph.hasTask(release) }
 }
-task processDevelopmentSqls(type: Copy, dependsOn: processResources) {
-   from "$rootDir/sqls/hsql"
-   into processResources.destinationDir
-   onlyIf { !gradle.taskGraph.hasTask(release) }
-}
 task processReleaseResources(type: Copy, dependsOn: processResources) {
    from 'env/prod/resources'
    into processResources.destinationDir
@@ -117,6 +112,15 @@ task processReleaseWebInf(type: Sync, dependsOn: processResources) {
    into "$buildDir/env-dependent-webcontent/WEB-INF"
    onlyIf { gradle.taskGraph.hasTask(release) }
 }
+
+
+// development resources
+
+task processDevelopmentSqls(type: Copy, dependsOn: processResources) {
+   from "$rootDir/sql"
+   into processResources.destinationDir
+}
+classes.dependsOn processDevelopmentSqls
 
 
 // jpa weaving
@@ -149,12 +153,13 @@ task weaveJpaEntities(type: JavaExec) {
   outputs.dir sourceSets.main.output.classesDir
 }
 weaveJpaEntities.dependsOn copyPersistentClasses,processDevelopmentResources,processDevelopmentWebInf,processDevelopmentSqls,processReleaseResources,processReleaseWebInf
+classes.dependsOn weaveJpaEntities
 
 
 // test resources
 
 task processTestSqls(type: Copy, dependsOn: processTestResources) {
-   from "$rootDir/sqls/hsql"
+   from "$rootDir/sql"
    into processTestResources.destinationDir
 }
 testClasses.dependsOn processTestSqls
