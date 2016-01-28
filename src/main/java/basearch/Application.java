@@ -1,7 +1,5 @@
 package basearch;
 
-import io.undertow.Undertow.Builder;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration;
@@ -12,22 +10,11 @@ import org.springframework.boot.context.embedded.undertow.UndertowBuilderCustomi
 import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 
-import basearch.dao.AuthDao;
 import basearch.dao.MetadataDao;
 import basearch.dao.UserDao;
-import basearch.dao.impl.AuthDaoImpl;
-import basearch.dao.impl.MetadataDaoImpl;
-import basearch.dao.impl.UserDaoImpl;
-import basearch.service.AuthService;
-import basearch.service.UserService;
-import basearch.service.impl.AuthServiceImpl;
-import basearch.service.impl.UserServiceImpl;
+import io.undertow.Undertow.Builder;
 
 @SpringBootApplication(exclude={SecurityAutoConfiguration.class,ManagementWebSecurityAutoConfiguration.class})
 @ServletComponentScan

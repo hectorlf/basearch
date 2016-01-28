@@ -1,11 +1,9 @@
 package basearch;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.Headers;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +15,7 @@ import basearch.service.AuthService;
 
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties
+@EnableConfigurationProperties(SecurityProperties.class)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
 	private static final String[] MANAGEMENT_ENDPOINTS = {"/management/dump","/management/health","/management/metrics","/management/trace"};
@@ -25,23 +23,19 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthService authService;
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public SecurityProperties securityProperties() {
-		return new SecurityProperties();
-	}
+	@Autowired
+	private SecurityProperties securityProperties;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// general properties
-		SecurityProperties props = securityProperties();
-		if (props.isRequireSsl()) http.requiresChannel().anyRequest().requiresSecure();
-		if (!props.isEnableCsrf()) http.csrf().disable();
-		if (!props.getHeaders().isFrame()) http.headers().frameOptions().disable();
-		if (!props.getHeaders().isContentType()) http.headers().contentTypeOptions().disable();
-		if (!props.getHeaders().isXss()) http.headers().xssProtection().disable();
-		if (props.getHeaders().getHsts() != Headers.HSTS.NONE) http.headers().httpStrictTransportSecurity().includeSubDomains(props.getHeaders().getHsts() == Headers.HSTS.ALL);
-		http.sessionManagement().sessionCreationPolicy(props.getSessions());
+		if (securityProperties.isRequireSsl()) http.requiresChannel().anyRequest().requiresSecure();
+		if (!securityProperties.isEnableCsrf()) http.csrf().disable();
+		if (!securityProperties.getHeaders().isFrame()) http.headers().frameOptions().disable();
+		if (!securityProperties.getHeaders().isContentType()) http.headers().contentTypeOptions().disable();
+		if (!securityProperties.getHeaders().isXss()) http.headers().xssProtection().disable();
+		if (securityProperties.getHeaders().getHsts() != Headers.HSTS.NONE) http.headers().httpStrictTransportSecurity().includeSubDomains(securityProperties.getHeaders().getHsts() == Headers.HSTS.ALL);
+		http.sessionManagement().sessionCreationPolicy(securityProperties.getSessions());
 		// management access rules
 		http.requiresChannel().antMatchers(MANAGEMENT_ENDPOINTS).requiresSecure();
 		http.authorizeRequests().antMatchers(MANAGEMENT_ENDPOINTS).hasRole("ADMIN").and().httpBasic();
