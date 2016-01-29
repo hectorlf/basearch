@@ -14,7 +14,7 @@ public class IndexController {
 	@RequestMapping(value="/index.page")
 	public String welcome(ModelMap model) {
 		logger.debug("Going into IndexController.welcome()");
-		return "/index.html";
+		return "index";
 	}
 
 }

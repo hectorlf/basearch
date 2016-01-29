@@ -14,7 +14,7 @@ public class SecuredController {
 	@RequestMapping(value="/secured.page")
 	public String welcome(ModelMap model) {
 		logger.debug("Going into SecuredController.welcome()");
-		return "/secured.html";
+		return "secured";
 	}
 
 }
