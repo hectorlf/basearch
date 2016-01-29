@@ -12,6 +12,12 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
+// project configuration
+def entitiesBasePackage = 'basearch.model'
+project.sourceCompatibility = '1.8'
+project.archivesBaseName = 'basearch'
+project.version = '0.1.0'
+
 sourceSets {
   main {
     resources {
@@ -20,31 +26,20 @@ sourceSets {
   }
 }
 
-jar {
-  baseName = 'basearch'
-  version =  '0.1.0'
-}
-
 repositories {
   mavenCentral()
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-tasks.withType(JavaCompile) {
-  options.incremental = true
+  jcenter()
 }
 
 configurations {
+  compile.exclude module: "spring-boot-starter-tomcat"
+
   weave
   metamodel
 }
 
 dependencies {
-  compile("org.springframework.boot:spring-boot-starter-web") {
-    exclude module: "spring-boot-starter-tomcat"
-  }
+  compile("org.springframework.boot:spring-boot-starter-web")
   compile("org.springframework.boot:spring-boot-starter-undertow")
   compile("org.springframework.boot:spring-boot-starter-actuator")
   compile("org.springframework.boot:spring-boot-starter-security")
@@ -52,60 +47,35 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-jdbc")
 
   compile 'javax.inject:javax.inject:1'
-  compile 'org.springframework:spring-orm'
-  compile 'org.eclipse.persistence:javax.persistence'
-  compile 'org.eclipse.persistence:org.eclipse.persistence.jpa'
-  compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4'
+  compile 'org.springframework:spring-orm:4.2.4.RELEASE'
+  compile 'org.eclipse.persistence:javax.persistence:2.1.0'
+  compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2'
+  compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
 
   runtime("org.hsqldb:hsqldb")
 
   testCompile("org.springframework.boot:spring-boot-starter-test")
 
-  weave 'org.eclipse.persistence:javax.persistence'
-  weave 'org.eclipse.persistence:org.eclipse.persistence.jpa'
+  weave 'org.eclipse.persistence:javax.persistence:2.1.0'
+  weave 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2'
 
-  metamodel 'org.eclipse.persistence:javax.persistence'
-  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa'
-  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor'
+  metamodel 'org.eclipse.persistence:javax.persistence:2.1.0'
+  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2'
+  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.2'
   metamodel 'org.springframework.security:spring-security-core'
-}
-
-configurations.all {
-  resolutionStrategy.dependencySubstitution {
-    substitute module('org.springframework:spring-orm') with module('org.springframework:spring-orm:4.2.4.RELEASE')
-    substitute module('org.eclipse.persistence:javax.persistence') with module('org.eclipse.persistence:javax.persistence:2.1.0')
-    substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa') with module('org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2')
-    substitute module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor') with module('org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.2')
-    substitute module('org.thymeleaf.extras:thymeleaf-extras-springsecurity4') with module('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
-  }
 }
 
 // local run marker task
 task start(dependsOn: bootRun) {
-	outputs.upToDateWhen { false }
+  outputs.upToDateWhen { false }
 }
-
-// project defs
-def entitiesBasePackage = 'basearch.model'
-
 
 compileJava {
-   destinationDir file("$buildDir/compiled-classes")
+  options.incremental = true
+  destinationDir file("$buildDir/compiled-classes")
 }
-
-
-
-// development resources
-
-task processDevelopmentSqls(type: Copy, dependsOn: processResources) {
-   from "$rootDir/sql"
-   into processResources.destinationDir
-}
-classes.dependsOn processDevelopmentSqls
-
 
 // jpa weaving
-
 task copyNonPersistentClasses(type: Copy, dependsOn: compileJava) {
   from "$buildDir/compiled-classes"
   into sourceSets.main.output.classesDir
@@ -133,22 +103,10 @@ task weaveJpaEntities(type: JavaExec) {
   inputs.files fileTree(copyPersistentClasses.destinationDir),fileTree(processResources.destinationDir).matching({pattern -> pattern.include('**/META-INF/persistence.xml')})
   outputs.dir sourceSets.main.output.classesDir
 }
-weaveJpaEntities.dependsOn copyPersistentClasses,processDevelopmentSqls
+weaveJpaEntities.dependsOn copyPersistentClasses
 classes.dependsOn weaveJpaEntities,copyNonPersistentClasses
 
-
-// test resources
-
-task processTestSqls(type: Copy, dependsOn: processTestResources) {
-   from "$rootDir/sql"
-   into processTestResources.destinationDir
-}
-testClasses.dependsOn processTestSqls
-
-
-
 // metamodel generation
-
 task deleteMetamodel(type: Delete) {
   delete sourceSets.main.java.matching({pattern -> pattern.include('**/' + entitiesBasePackage.replaceAll('\\.','/') + '/**/*_.java')})
 }
@@ -157,8 +115,9 @@ task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
   source sourceSets.main.java.matching({pattern -> pattern.include('**/' + entitiesBasePackage.replaceAll('\\.','/') + '/**')})
   destinationDir = sourceSets.main.java.getSrcDirs().iterator().next()
   options.compilerArgs << '-proc:only'
-  options.compilerArgs << '-Aeclipselink.persistencexml=' + "$projectDir/env/dev/resources/META-INF/persistence.xml"
+  options.compilerArgs << '-Aeclipselink.persistencexml=' + "$projectDir/src/main/resources/META-INF/persistence.xml"
 }
+
 
 
 
