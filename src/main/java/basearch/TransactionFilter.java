@@ -19,7 +19,7 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @WebFilter(urlPatterns={"*.page","*.action","/login","/logout"})
 public class TransactionFilter implements Filter {
@@ -49,7 +49,7 @@ public class TransactionFilter implements Filter {
 
 	private void doFirstTimeFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		request.setAttribute(TRANSACTION_FILTER_MARKER_ATTRIBUTE, TRANSACTION_FILTER_MARKER_ATTRIBUTE);
-		ApplicationContext ctx = ContextLoaderListener.getCurrentWebApplicationContext();
+		ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
 		PlatformTransactionManager txManager = (PlatformTransactionManager)ctx.getBean("transactionManager");
 		TransactionAttribute def = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus tx = null;
