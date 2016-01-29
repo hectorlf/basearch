@@ -6,6 +6,7 @@ import javax.persistence.NonUniqueResultException;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.util.Assert;
 
 import basearch.dao.MetadataDao;
@@ -46,11 +47,11 @@ public class MetadataDaoTests extends BaseTest {
 		Assert.isTrue(l.toLocale().equals(new Locale("es", "ES")));
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=InvalidDataAccessApiUsageException.class)
 	public void testIllegalArgumentException1() {
 		metadataDao.getLanguageBy(null, null, null);
 	}
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=InvalidDataAccessApiUsageException.class)
 	public void testIllegalArgumentException2() {
 		metadataDao.getLanguageBy("blablabla", null, "shouldbreak");
 	}

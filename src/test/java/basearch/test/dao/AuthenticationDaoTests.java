@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import basearch.dao.AuthDao;
@@ -16,6 +17,7 @@ import basearch.model.auth.Authority;
 import basearch.model.auth.Principal;
 import basearch.test.BaseTest;
 
+@Transactional
 public class AuthenticationDaoTests extends BaseTest {
 
 	@Autowired

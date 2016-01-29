@@ -1,7 +1,9 @@
 -- Table: languages
 insert into languages values (1,'es','ES',null);
-insert into languages values (2,'en','UK',null);
-insert into languages values (3,'en','US',null);
+insert into languages values (2,'es',null,null);
+insert into languages values (3,'en','GB',null);
+insert into languages values (4,'en','US',null);
+insert into languages values (5,'en',null,null);
 
 -- Table: users
 insert into users values (1,'admin','$2a$10$fdCTnC8xIL5HhvFKJIGDiecG91buB6Lj9IB/US2xqxFiKhCcMCXBq', true, 1);

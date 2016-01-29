@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import basearch.test.BaseSecurityTest;
 
+@Ignore
 public class SecurityTests extends BaseSecurityTest {
 
 	@Test

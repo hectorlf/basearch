@@ -2,6 +2,7 @@ package basearch.test.dao;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.util.Assert;
 
 import basearch.dao.UserDao;
@@ -23,7 +24,7 @@ public class UserDaoTests extends BaseTest {
 		Assert.isNull(userDao.getByUsername("nonexistentuser"));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=InvalidDataAccessApiUsageException.class)
 	public void testIllegalArgumentException1() {
 		userDao.getByUsername(null);
 	}
