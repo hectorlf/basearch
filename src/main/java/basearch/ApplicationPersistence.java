@@ -23,39 +23,35 @@ public class ApplicationPersistence {
 	@Autowired
 	private DataSource dataSource;
 
-	@Configuration
-	@Profile("default")
-	public static class DevelopmentJpaProperties {
-		@Bean
-		public Map<String,?> jpaProperties() {
-			Map<String,String> properties = new HashMap<>();
-			properties.put("eclipselink.weaving", "static");
-			properties.put("eclipselink.logging.level", "FINE");
-			properties.put("eclipselink.cache.shared.default", "false");
-			return properties;
-		}
-	}
-	
-	@Configuration
-	@Profile("production")
-	public static class ProductionJpaProperties {
-		@Bean
-		public Map<String,?> jpaProperties() {
-			Map<String,String> properties = new HashMap<>();
-			properties.put("eclipselink.weaving", "static");
-			properties.put("eclipselink.logging.level", "OFF");
-			return properties;
-		}
-	}
-
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(Map<String,?> jpaProperties) {
+	@Profile("default")
+	public LocalContainerEntityManagerFactoryBean developmentEntityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(dataSource);
 		factory.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
 
 		// jpa settings
-		factory.setJpaPropertyMap(jpaProperties);
+		Map<String,String> properties = new HashMap<>();
+		properties.put("eclipselink.weaving", "static");
+		properties.put("eclipselink.logging.level", "FINE");
+		properties.put("eclipselink.cache.shared.default", "false");
+		factory.setJpaPropertyMap(properties);
+
+		return factory;
+	}
+
+	@Bean
+	@Profile("production")
+	public LocalContainerEntityManagerFactoryBean productionEntityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+		factory.setDataSource(dataSource);
+		factory.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
+
+		// jpa settings
+		Map<String,String> properties = new HashMap<>();
+		properties.put("eclipselink.weaving", "static");
+		properties.put("eclipselink.logging.level", "OFF");
+		factory.setJpaPropertyMap(properties);
 
 		return factory;
 	}
