@@ -1,9 +1,13 @@
 package basearch.test;
 
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(JUnit4.class)
+import basearch.Application;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(Application.class)
 public abstract class BaseTest {
 
 }

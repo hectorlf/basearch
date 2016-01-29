@@ -14,9 +14,9 @@ import basearch.dao.MetadataDao;
 import basearch.model.Language;
 import basearch.model.auth.Authority;
 import basearch.model.auth.Principal;
-import basearch.test.BaseDaoTest;
+import basearch.test.BaseTest;
 
-public class AuthenticationDaoTests extends BaseDaoTest {
+public class AuthenticationDaoTests extends BaseTest {
 
 	@Autowired
 	private MetadataDao metadataDao;

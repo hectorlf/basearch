@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +26,8 @@ import basearch.CustomLocaleResolver;
 import basearch.model.Language;
 import basearch.test.BaseMvcTest;
 
-@ContextConfiguration(classes=LocaleResolverTests.Config.class)
 public class LocaleResolverTests extends BaseMvcTest {
 
-	@Configuration
 	public static class Config {
 		@Bean
 		public MetadataDao metadataDao() {
@@ -61,6 +60,7 @@ public class LocaleResolverTests extends BaseMvcTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSessionLocale() throws Exception {
 		// tested in the security tests
 	}
