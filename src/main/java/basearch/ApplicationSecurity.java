@@ -36,15 +36,16 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 		if (!securityProperties.getHeaders().isXss()) http.headers().xssProtection().disable();
 		if (securityProperties.getHeaders().getHsts() != Headers.HSTS.NONE) http.headers().httpStrictTransportSecurity().includeSubDomains(securityProperties.getHeaders().getHsts() == Headers.HSTS.ALL);
 		http.sessionManagement().sessionCreationPolicy(securityProperties.getSessions());
-		// management access rules
-		http.requiresChannel().antMatchers(MANAGEMENT_ENDPOINTS).requiresSecure();
-		http.authorizeRequests().antMatchers(MANAGEMENT_ENDPOINTS).hasRole("ADMIN").and().httpBasic();
-		// app access rules
-		http.requiresChannel().antMatchers("/login","/logout","/login.page","/secured.page").requiresSecure();
+		// login config
 		http.formLogin().loginPage("/login.page").loginProcessingUrl("/login").defaultSuccessUrl("/secured.page").failureUrl("/login.page?error");
 		http.exceptionHandling().accessDeniedPage("/unauthorized.page");
-		http.logout().logoutSuccessUrl("/index.page");
-		http.authorizeRequests().antMatchers("/secured.page").hasRole("ADMIN").and().formLogin();
+		http.logout().logoutUrl("/logout").logoutSuccessUrl("/index.page");
+		// management access rules
+		http.requiresChannel().antMatchers(MANAGEMENT_ENDPOINTS).requiresSecure();
+		http.authorizeRequests().antMatchers(MANAGEMENT_ENDPOINTS).hasRole("ADMIN");
+		// app access rules
+		http.requiresChannel().antMatchers("/login","/logout","/login.page","/secured.page").requiresSecure();
+		http.authorizeRequests().antMatchers("/secured.page").hasRole("ADMIN");
 		// default access rules
 		http.authorizeRequests().antMatchers("/**").permitAll();
 	}
