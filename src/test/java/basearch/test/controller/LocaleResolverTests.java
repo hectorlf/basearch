@@ -9,7 +9,6 @@ import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import basearch.Constants;
@@ -18,7 +17,6 @@ import basearch.test.BaseMvcTest;
 public class LocaleResolverTests extends BaseMvcTest {
 
 	@Test
-	@Ignore
 	public void testSessionLocale() throws Exception {
 		// tested in the security tests
 	}
