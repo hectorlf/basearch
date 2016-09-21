@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
     classpath('org.springframework:springloaded:1.2.5.RELEASE')
   }
 }
@@ -47,23 +47,23 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-jdbc")
 
   compile 'javax.inject:javax.inject:1'
-  compile 'org.springframework:spring-orm:4.3.2.RELEASE'
+  compile 'org.springframework:spring-orm:4.3.3.RELEASE'
   compile 'org.eclipse.persistence:javax.persistence:2.1.0'
-  compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.3'
+  compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.4'
   compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
 
   runtime("org.hsqldb:hsqldb")
 
   testCompile("org.springframework.boot:spring-boot-starter-test")
-  testCompile 'org.springframework.security:spring-security-test:4.1.1.RELEASE'
+  testCompile 'org.springframework.security:spring-security-test:4.1.3.RELEASE'
 
   weave 'org.eclipse.persistence:javax.persistence:2.1.0'
-  weave 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.3'
+  weave 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.4'
 
   metamodel 'org.eclipse.persistence:javax.persistence:2.1.0'
-  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.3'
-  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.3'
-  metamodel 'org.springframework.security:spring-security-core:4.1.1.RELEASE'
+  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.4'
+  metamodel 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.4'
+  metamodel 'org.springframework.security:spring-security-core:4.1.3.RELEASE'
 }
 
 // local run marker task
