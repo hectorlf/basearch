@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
     classpath('org.springframework:springloaded:1.2.5.RELEASE')
   }
 }
@@ -47,7 +47,7 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-jdbc")
 
   compile 'javax.inject:javax.inject:1'
-  compile 'org.springframework:spring-orm:4.3.3.RELEASE'
+  compile 'org.springframework:spring-orm:4.3.4.RELEASE'
   compile 'org.eclipse.persistence:javax.persistence:2.1.0'
   compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.4'
   compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
