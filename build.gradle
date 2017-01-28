@@ -126,5 +126,5 @@ task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
 // Gradle wrapper task
 // Only used when in need to reinstall the wrapper
 task wrapper(type: Wrapper) {
-  gradleVersion = '3.2-rc-3'
+  gradleVersion = '3.3'
 }
