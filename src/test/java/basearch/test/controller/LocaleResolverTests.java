@@ -23,13 +23,12 @@ public class LocaleResolverTests extends BaseMvcTest {
 
 	@Test
 	public void testNoLocale() throws Exception {
-		mockMvc.perform(get("/index.page").locale(null))
+		mockMvc.perform(get("/index.page"))
 			.andExpect(status().isOk());
 	}
 
 	@Test
 	public void testAcceptHeaderLocale1() throws Exception {
-		// this should kick in as an accept-language locale
 		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("es-ES")))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Bienvenido")));
@@ -44,22 +43,28 @@ public class LocaleResolverTests extends BaseMvcTest {
 
 	@Test
 	public void testAcceptHeaderLocale3() throws Exception {
-		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("en-US")).header("Accept-Language","en-US, en-GB, en"))
+		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("en-US")))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Welcome")));
 	}
 
 	@Test
 	public void testAcceptHeaderLocale4() throws Exception {
-		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("pt-BR")).header("Accept-Language","pt-BR, pt, en"))
+		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("pt-BR")))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("Bienvenido")));
+	}
+
+	@Test
+	public void testAcceptHeaderLocale5() throws Exception {
+		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("en-GB")))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Welcome")));
 	}
 
 	@Test
-	public void testAcceptHeaderLocale5() throws Exception {
-		// this should kick in as an accept-language locale
-		mockMvc.perform(get("/index.page").locale(Locale.forLanguageTag("en-GB")))
+	public void testAcceptHeaderLocale6() throws Exception {
+		mockMvc.perform(get("/index.page").header("Accept-Language","en-US, en-GB, en"))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Welcome")));
 	}
