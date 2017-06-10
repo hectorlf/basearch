@@ -118,13 +118,3 @@ task generateMetamodel(type: JavaCompile, dependsOn: deleteMetamodel) {
   options.compilerArgs << '-proc:only'
   options.compilerArgs << '-Aeclipselink.persistencexml=' + "$projectDir/src/main/resources/META-INF/persistence.xml"
 }
-
-
-
-
-
-// Gradle wrapper task
-// Only used when in need to reinstall the wrapper
-task wrapper(type: Wrapper) {
-  gradleVersion = '3.5'
-}
